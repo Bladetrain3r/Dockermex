@@ -60,7 +60,4 @@ Specify IWAD and game mode at launch time using the environment variables `GAMEM
 
 ## License
 
-This project is licensed under the MIT License.
-```
-
-Feel free to customize the README further based on your specific needs.
+This project is licensed under the  Unlicense. Use the contents of this repository at your own risk. 
