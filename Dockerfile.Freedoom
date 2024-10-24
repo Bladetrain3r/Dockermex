@@ -6,9 +6,25 @@ WORKDIR /app/odamex/build
 RUN cmake .. && make odasrv
 # Runtime Stage
 
+FROM ubuntu:latest AS freedoom-builder
+VOLUME ["/freedoom"] 
+WORKDIR /app
+RUN apt update && apt install -y git make gcc python3 python3-pil zip autoconf autoconf-archive automake libtool libpng-dev pkg-config
+RUN git clone https://github.com/Doom-Utils/deutex
+WORKDIR /app/deutex
+RUN ls
+RUN ./bootstrap && ./configure && make && make install
+ENV DEUTEX=/usr/local/bin/deutex
+WORKDIR /app
+RUN git clone https://github.com/freedoom/freedoom.git
+WORKDIR /app/freedoom
+RUN cp /wads/* /mnt
+RUN make
+
 FROM ubuntu:latest AS server
 WORKDIR /app 
 COPY --from=builder --chown=ubuntu /app/odamex/build /app
+COPY --from=freedoom-builder --chown=ubuntu /app/freedoom/wads /app/iwads
 COPY --chown=ubuntu configs /app/config
 COPY --chown=ubuntu iwads /app/iwads
 COPY --chown=ubuntu pwads /app/pwads
