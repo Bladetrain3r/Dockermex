@@ -1,11 +1,20 @@
 #!/bin/bash
-iwad=${IWAD:-"doom.wad"}
-echo "Using IWAD: $iwad"
+# Export non-default environment variables
+echo "Iwads:"
 ls /app/iwads
+sleep 1
+oconfigfile=${CONFIGFILE:-"default.conf"}
+echo "Using config file: $oconfigfile"
+test -e /app/config/$oconfigfile || echo "Config file not found"
+sed -i 's/\r/\n/g' /app/config/$oconfigfile
+source /app/config/$oconfigfile || echo "Failed to load from config file."
+
+echo "Using IWAD: $oiwad"
+oiwad=$(echo "$oiwad" | tr -d '\r')
 mkdir /home/ubuntu/.odamex
-cp /app/iwads/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/$iwad /home/ubuntu/.odamex
+cp /app/iwads/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/${oiwad} /home/ubuntu/.odamex
 # Will include all wads in the folder
-pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3)
+pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 echo "pwads: ${pwads}"
 
 gamemodes=("coop" "deathmatch" "tdm" "ctf")
@@ -25,18 +34,18 @@ get_index() {
 }
 
 # Get the gamemode from the environment variable or use the default
-gamemode=${GAMEMODE:-"deathmatch"}
 
 # Get the index of the gamemode
-gamemode_flag=$(get_index "$gamemode" "${gamemodes[@]}")
+ogamemode=$(echo "$ogamemode" | tr -d '\r')
+gamemode_flag=$(get_index "$ogamemode" "${gamemodes[@]}")
 
 # Check if the gamemode is valid
 if [ "$gamemode_flag" -eq -1 ]; then
-  echo "Invalid gamemode: $gamemode"
+  echo "Invalid gamemode: $ogamemode"
   exit 1
 fi
 
-echo "Using gamemode: $gamemode (flag: $gamemode_flag)"
+echo "Using gamemode: $ogamemode (flag: $gamemode_flag)"
 
 pwadparams=""
 for file in $pwads; do
@@ -44,26 +53,28 @@ for file in $pwads; do
   pwadparams="$pwadparams -file /app/pwads/${file}"
 done
 
-cmd="/app/server/odasrv -iwad /app/iwads/${iwad} -file /app/iwads/odamex.wad ${pwadparams}"
+cmd="/app/server/odasrv -iwad /app/iwads/${oiwad} -file /app/iwads/odamex.wad ${pwadparams}"
 echo "Command: $cmd"
 
-/app/server/odasrv -iwad "/app/iwads/${iwad}" \
+sleep 3
+
+/app/server/odasrv -iwad "/app/iwads/${oiwad}" \
 -file "/app/iwads/odamex.wad" \
 ${pwadparams} \
--port 10666 \
-+g_lives 0 \
-+sv_teamsinplay 2 \
-+g_sides 0 \
--skill 4 \
-+sv_shufflemaplist 0 \
+-port $oport \
++g_lives $olives \
++sv_teamsinplay $oteamsinplay \
++g_sides $osides \
+-skill $oskill \
++sv_shufflemaplist $oshufflemaplist \
 +sv_gametype $gamemode_flag \
-+map "E1M1" \
++map ${ostartmap} \
 +set sv_upnp 0 \
-+join_password "" \
-+rcon_password "" \
-+sv_email "" \
-+sv_hostname "Dockermex" \
-+sv_maxclients 16 \
-+sv_maxplayers 8 \
-+sv_motd "Welcome to the dungeon, marines." \
-+sv_usemasters 0
++join_password $ojoin_password \
++rcon_password $orcon_password \
++sv_email $oemail \
++sv_hostname $ohostname \
++sv_maxclients $omaxclients \
++sv_maxplayers $omaxplayers \
++sv_motd "Buggrit." \
++sv_usemasters $ousemasters
