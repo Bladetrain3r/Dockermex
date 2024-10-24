@@ -5,7 +5,7 @@ ls /app/iwads
 mkdir /home/ubuntu/.odamex
 cp /app/iwads/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/$iwad /home/ubuntu/.odamex
 # Will include all wads in the folder
-pwads=$(ls /app/pwads | grep -i -e wad -e pk3)
+pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3)
 echo "pwads: ${pwads}"
 
 gamemodes=("coop" "deathmatch" "tdm" "ctf")
@@ -57,7 +57,7 @@ ${pwadparams} \
 -skill 4 \
 +sv_shufflemaplist 0 \
 +sv_gametype $gamemode_flag \
-+map "MAP01" "MAP02" "MAP03" \
++map "E1M1" \
 +set sv_upnp 0 \
 +join_password "" \
 +rcon_password "" \
@@ -65,6 +65,5 @@ ${pwadparams} \
 +sv_hostname "Dockermex" \
 +sv_maxclients 16 \
 +sv_maxplayers 8 \
-+sv_website "" \
 +sv_motd "Welcome to the dungeon, marines." \
 +sv_usemasters 0
