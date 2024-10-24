@@ -72,7 +72,7 @@ The `runserver.sh` script sets up the server environment, copies necessary files
 You can customize the server configuration by modifying or creating new conf files in the configs folder, and by placing IWADs/PWADs in the respective directories.
 Specify configfile at launch time using the environment variable CONFIGFILE. Defaults to default.conf.
 
-This Docker setup also includes compiling Freedoom and Deutex, both under the BSD license. Freedoom is a free content port of DOOM, while Deutex provides additional free content for enhanced gameplay.
+This Docker setup also includes compiling Freedoom and Deutex, both under the BSD license. Freedoom is a free content port of DOOM, while Deutex provides additional tools for handling and editing Doom files.
 
 For detailed instructions on building these components, please refer to their respective repositories:
 
