@@ -19,13 +19,11 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 │   ├── freedoom2.wad
 │   └── odamex.wad
 ├── pwads/
-│   └── jenesis.wad
+│   └── example.wad
 ├── 
 
 runserver.sh
 
-
-└── servercfg/
 ```
 
 ## Dockerfile
