@@ -30,9 +30,14 @@ runserver.sh
 
 The `Dockerfile` is divided into two stages: build and runtime.
 
-### Build Stage
+### Odamex Build Stage
 
 The build stage clones the Odamex repository, installs necessary dependencies, and builds the `odasrv` server.
+
+### FreeDoom Build
+
+This stage only applies to Dockerfile.Freedoom, and will download + compile a copy of Freedoom.
+I recommend using a precompiled binary and Dockerfile instead as this is likely not compatible with the copy clients will have, and will take extra space.
 
 ### Runtime Stage
 
