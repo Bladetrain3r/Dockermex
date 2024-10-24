@@ -8,15 +8,15 @@ RUN cmake .. && make odasrv
 
 FROM ubuntu:latest AS server
 WORKDIR /app
-COPY --from=builder /app/odamex/build /app
+# For 
+COPY --from=builder --chown=ubuntu /app/odamex/build /app
 # Provide your own WADS
-COPY iwads /app/iwads
-COPY pwads /app/pwads
-COPY runserver.sh /app
+
+COPY --chown=ubuntu configs /app/config
+COPY --chown=ubuntu iwads /app/iwads
+COPY --chown=ubuntu pwads /app/pwads
+COPY --chown=ubuntu runserver.sh /app
 USER ubuntu
-# RUN mkdir /home/ubuntu/.odamex
-# RUN cp odamex.wad /home/ubuntu/.odamex && cp DOOM2.WAD /home/ubuntu/.odamex
 # ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]
-# ENTRYPOINT ["/app/server/odasrv", "-iwad /app/DOOM2.WAD", "-file /app/odamex.wad", "-config /app/odamex.cfg", "-exec /app/odamex-server.cfg" ]
 EXPOSE 10666/udp
