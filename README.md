@@ -8,9 +8,9 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 
 ## Repository Structure
 
-
-.
 ├── Dockerfile
+├── runserver.sh
+├── README
 ├── iwads/
 │   ├── doom.wad
 │   ├── DOOM2.WAD
@@ -19,7 +19,6 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 │   └── odamex.wad
 ├── pwads/
 │   └── example.wad
-├── 
 
 runserver.sh
 
