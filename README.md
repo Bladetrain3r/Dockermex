@@ -52,7 +52,7 @@ The `runserver.sh` script sets up the server environment, copies necessary files
    ```
    
 
-2. **Run the Docker Container:**
+2. **Run the Docker Container, set CONFIGFILE environment to change config:**
 
    ```sh
    docker run -d -e CONFIGFILE="doom2.conf" -p 10666:10666/udp --name odamex-server odamex-server
