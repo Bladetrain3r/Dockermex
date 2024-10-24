@@ -43,19 +43,41 @@ The `runserver.sh` script sets up the server environment, copies necessary files
 1. **Build the Docker Image:**
 
    ```sh
-   docker build -t odamex-server .
+   docker build -t odamex-server -f Dockerfile .
    ```
+
+   ```sh
+   # Freedoom. Copy WAD out of final container as it will not match the hashsums of pre-existing binaries.
+   docker build -t odamex-server -f Dockerfile.Freedoom .
+   ```
+   
 
 2. **Run the Docker Container:**
 
    ```sh
-   docker run -d -p 10666:10666/udp --name odamex-server odamex-server
+   docker run -d -e CONFIGFILE="doom2.conf" -p 10666:10666/udp --name odamex-server odamex-server
    ```
 
 ## Configuration
 
 You can customize the server configuration by modifying the `runserver.sh` script and the IWADs/PWADs in the respective directories.
 Specify IWAD and game mode at launch time using the environment variables `GAMEMODE` and `IWAD`
+
+This Docker setup also includes compiling Freedoom and Deutex, both under the BSD license. Freedoom is a free content port of DOOM, while Deutex provides additional free content for enhanced gameplay.
+
+For detailed instructions on building these components, please refer to their respective repositories:
+
+- [Freedoom GitHub](https://github.com/freedoom/freedoom)
+- [Deutex GitHub](https://github.com/deutex/deutex)
+
+Please note that the hashsum of the compiled freedoom WADs will differ from public stable builds and you will need to distribute them.
+To copy it out to a local directory, run the container (note the tag) and run docker cp:
+```sh
+docker cp <CONTAINER_NAME>:/app/iwads/freedm.wad .
+```
+
+This is entirely optional, not really advisable, and it's easier just to dump one of the official binaries in the iwads folder then build the usual container.
+It's mostly something for interest or if you want to run a server EXTRA privately.
 
 ## License
 

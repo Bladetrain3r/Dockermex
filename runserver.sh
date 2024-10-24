@@ -1,8 +1,6 @@
 #!/bin/bash
 # Export non-default environment variables
 echo "Iwads:"
-ls /app/iwads
-sleep 1
 oconfigfile=${CONFIGFILE:-"default.conf"}
 echo "Using config file: $oconfigfile"
 test -e /app/config/$oconfigfile || echo "Config file not found"
@@ -13,6 +11,7 @@ echo "Using IWAD: $oiwad"
 oiwad=$(echo "$oiwad" | tr -d '\r')
 mkdir /home/ubuntu/.odamex
 cp /app/iwads/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/${oiwad} /home/ubuntu/.odamex
+for item in $(ls /app/iwads | grep -v ${oiwad}); do rm /app/iwads/${item}; done
 # Will include all wads in the folder
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 echo "pwads: ${pwads}"
@@ -30,10 +29,8 @@ get_index() {
       return
     fi
   done
-  echo -1  # Return -1 if the value is not found
+  echo -1
 }
-
-# Get the gamemode from the environment variable or use the default
 
 # Get the index of the gamemode
 ogamemode=$(echo "$ogamemode" | tr -d '\r')
