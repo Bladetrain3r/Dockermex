@@ -8,17 +8,21 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 
 ## Repository Structure
 
-├── Dockerfile
-├── runserver.sh
-├── README
-├── iwads/
-│   ├── doom.wad
-│   ├── DOOM2.WAD
-│   ├── freedoom1.wad
-│   ├── freedoom2.wad
-│   └── odamex.wad
-├── pwads/
-│   └── example.wad
+- Dockerfile
+- runserver.sh
+- README
+- configs
+- - default.conf
+- - doom2.conf
+- - doom2dm.conf
+- iwads/
+- - doom.wad
+- - DOOM2.WAD
+- - freedoom1.wad
+- - freedoom2.wad
+- - odamex.wad
+- pwads/
+- - example.wad
 
 runserver.sh
 
