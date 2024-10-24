@@ -1,6 +1,5 @@
 Sure, here is a README in GitHub Markdown format:
 
-```markdown
 # Odamex Docker Setup
 
 This repository contains the Docker setup for running an Odamex server. The setup includes building the server from source and running it with custom IWADs and PWADs.
@@ -9,7 +8,7 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 
 ## Repository Structure
 
-```
+
 .
 ├── Dockerfile
 ├── iwads/
@@ -23,8 +22,6 @@ NOTE: This does not compile odamex.wad, until that's working please obtain a cop
 ├── 
 
 runserver.sh
-
-```
 
 ## Dockerfile
 
