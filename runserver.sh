@@ -1,5 +1,6 @@
 #!/bin/bash
 # Export non-default environment variables
+monsters=""
 echo "Iwads:"
 oconfigfile=${CONFIGFILE:-"default.conf"}
 echo "Using config file: $oconfigfile"
@@ -42,6 +43,10 @@ if [ "$gamemode_flag" -eq -1 ]; then
   exit 1
 fi
 
+if [ "$gamemode_flag" -ne 0 ]; then
+  monsters="-nomonsters"
+fi
+
 echo "Using gamemode: $ogamemode (flag: $gamemode_flag)"
 
 pwadparams=""
@@ -57,6 +62,7 @@ sleep 3
 
 /app/server/odasrv -iwad "/app/iwads/${oiwad}" \
 -file "/app/iwads/odamex.wad" \
+${monsters} \
 ${pwadparams} \
 -port $oport \
 +g_lives $olives \
