@@ -74,7 +74,7 @@ For detailed instructions on building these components, please refer to their re
 - [Freedoom GitHub](https://github.com/freedoom/freedoom)
 - [Deutex GitHub](https://github.com/deutex/deutex)
 
-Please note that the hashsum of the compiled freedoom WADs will differ from public stable builds and you will need to distribute them.
+Please note that the checksum of the compiled freedoom WADs will differ from public stable builds and you will need to distribute them.
 To copy it out to a local directory, run the container (note the tag) and run docker cp:
 ```sh
 docker cp <CONTAINER_NAME>:/app/iwads/freedm.wad .
