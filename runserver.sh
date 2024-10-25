@@ -11,7 +11,7 @@ source /app/config/$oconfigfile || echo "Failed to load from config file."
 echo "Using IWAD: $oiwad"
 oiwad=$(echo "$oiwad" | tr -d '\r')
 mkdir /home/ubuntu/.odamex
-cp /app/iwads/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/${oiwad} /home/ubuntu/.odamex
+cp /app/odamex.wad /home/ubuntu/.odamex && cp /app/iwads/${oiwad} /home/ubuntu/.odamex
 for item in $(ls /app/iwads | grep -v ${oiwad}); do rm /app/iwads/${item}; done
 # Will include all wads in the folder
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
