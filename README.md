@@ -74,10 +74,11 @@ Specify configfile at launch time using the environment variable CONFIGFILE. Def
 
 This Docker setup also includes compiling Freedoom and Deutex, both under the BSD license. Freedoom is a free content port of DOOM, while Deutex provides additional tools for handling and editing Doom files.
 
-For detailed instructions on building these components, please refer to their respective repositories:
+For detailed instructions on building individual components, please refer to their respective repositories:
 
+- [Odamex Github](https://github.com/odamex/odamex.git)
 - [Freedoom GitHub](https://github.com/freedoom/freedoom)
-- [Deutex GitHub](https://github.com/deutex/deutex)
+- [Deutex GitHub](https://github.com/Doom-Utils/deutex)
 
 Please note that the checksum of the compiled freedoom WADs will differ from public stable builds and you will need to distribute them.
 To copy it out to a local directory, run the container (note the tag) and run docker cp:
@@ -88,6 +89,15 @@ docker cp <CONTAINER_NAME>:/app/iwads/freedm.wad .
 This is entirely optional, not really advisable, and it's easier just to dump one of the official binaries in the iwads folder then build the usual container.
 It's mostly something for interest or if you want to run a server EXTRA privately.
 
-## License
+## Licenses
 
 This project is licensed under the  Unlicense. Use the contents of this repository at your own risk. 
+
+Odamex is licensed under the [GNU GPL2 public license](https://github.com/odamex/odamex/blob/stable/LICENSE) 
+Freedoom is licensed under [this license](https://github.com/freedoom/freedoom/blob/master/COPYING.adoc)
+Deutex is licensed under a [GPL2 license with additional third party licenses](https://github.com/Doom-Utils/deutex/blob/master/LICENSE)
+
+## Credits:
+[Odamex](https://github.com/odamex/odamex/blob/stable/MAINTAINERS)
+[FreeDoom](https://github.com/freedoom/freedoom/blob/master/CREDITS)
+[Deutex](https://github.com/Doom-Utils/deutex/blob/master/AUTHORS)
