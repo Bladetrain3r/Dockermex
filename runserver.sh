@@ -29,8 +29,6 @@ done
 cmd="/app/server/odasrv -iwad /app/iwads/${oiwad} -file /app/iwads/odamex.wad ${pwadparams}"
 echo "Command: $cmd"
 
-sleep 3
-
 /app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams}
 #-file "/app/iwads/odamex.wad" \
 
