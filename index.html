@@ -1,0 +1,79 @@
+<!-- Pure Placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odamex Server Deployment</title>
+</head>
+<body>
+    <h1>Deploy Odamex Server</h1>
+    <form id="deployForm">
+        <label for="iwad">Select IWAD:</label>
+        <select id="iwad" name="iwad">
+            <option value="freedoom1.wad">DOOM 1</option>
+            <option value="freedoom2.wad">DOOM 2</option>
+            <!-- Add more IWAD options here -->
+        </select>
+        <br><br>
+
+        <label for="pwad">Select PWAD:</label>
+        <select id="pwad" name="pwad">
+            <option value="example1.wad">Example 1</option>
+            <option value="example2.wad">Example 2</option>
+            <!-- Add more PWAD options here -->
+        </select>
+        <br><br>
+
+        <label for="containerName">Container Name:</label>
+        <input type="text" id="containerName" name="containerName">
+        <br><br>
+
+        <label for="config">Config:</label>
+        <input type="text" id="config" name="config">
+        <br><br>
+
+        <button type="submit">Deploy</button>
+    </form>
+
+    <h2>Connection Details</h2>
+    <p>DNS Name: <span id="dnsName">example.com</span></p>
+    <p>Port: <span id="port">Loading...</span></p>
+
+    <script>
+        document.getElementById('deployForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const iwad = document.getElementById('iwad').value;
+            const pwad = document.getElementById('pwad').value;
+            const containerName = document.getElementById('containerName').value;
+            const config = document.getElementById('config').value;
+
+            const data = {
+                iwad: iwad,
+                pwad: pwad,
+                containerName: containerName,
+                config: config
+            };
+
+            fetch('https://api.example.com/deploy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById('port').textContent = data.port;
+                alert('Deployment initiated successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Deployment failed!');
+            });
+        });
+    </script>
+</body>
+</html>

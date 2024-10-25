@@ -1,43 +1,40 @@
-# Odamex Build
+# Odamex Build Stage
 
 FROM ubuntu:latest AS builder-base
 WORKDIR /app
 RUN apt update && apt install -y g++ cmake git libfltk1.3-dev libsdl2-dev libsdl2-mixer-dev libcurl4-openssl-dev libpng-dev libjsoncpp-dev zlib1g-dev libportmidi-dev libprotobuf-dev
+RUN git clone https://github.com/odamex/odamex.git --recurse-submodules
 
 FROM builder-base AS srv
 WORKDIR /app/odamex/build
-RUN cmake .. && make odasrv
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv
 
-FROM builder-base AS deutex
+# Build WADs
+
+FROM builder-base AS wad
 RUN apt update && apt install -y git make gcc autoconf autoconf-archive automake pkg-config
 RUN git clone https://github.com/Doom-Utils/deutex
 WORKDIR /app/deutex
-RUN ls
 RUN ./bootstrap && ./configure && make && make install
-
-FROM deutex AS wad
 ENV DEUTEX=/usr/local/bin/deutex
 WORKDIR /app/odamex/build
-RUN cmake .. && make odawad
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
 
-FROM deutex AS freedoom-builder
-VOLUME ["/freedoom"]
+FROM wad AS freedoom-builder
 ENV DEUTEX=/usr/local/bin/deutex
 WORKDIR /app
 RUN apt update && apt install -y python3 python3-pil zip libtool libpng-dev
 RUN git clone https://github.com/freedoom/freedoom.git
 WORKDIR /app/freedoom
-RUN cp /wads/* /mnt
 RUN make
-
-# Runtime Stage
 
 FROM ubuntu:latest AS server
 WORKDIR /app 
+COPY --from=freedoom-builder --chown=ubuntu /app/freedoom/wads /app/iwads
 COPY --from=srv --chown=ubuntu /app/odamex/build/server/odasrv /app/server/odasrv
 COPY --from=WAD --chown=ubuntu /app/odamex/build/wad/odamex.wad /app
-COPY --from=freedoom-builder --chown=ubuntu /app/freedoom/wads /app/iwads
 COPY --chown=ubuntu configs /app/config
+COPY --chown=ubuntu iwads /app/iwads
 COPY --chown=ubuntu pwads /app/pwads
 COPY --chown=ubuntu runserver.sh /app
 USER ubuntu
