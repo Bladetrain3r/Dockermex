@@ -4,8 +4,6 @@ Sure, here is a README in GitHub Markdown format:
 
 This repository contains the Docker setup for running an Odamex server. The setup includes building the server from source and running it with custom IWADs and PWADs.
 
-NOTE: This does not compile odamex.wad, until that's working please obtain a copy from an Odamex release build.
-
 ## Repository Structure
 
 - Dockerfile
@@ -36,8 +34,7 @@ The build stage clones the Odamex repository, installs necessary dependencies, a
 
 ### FreeDoom Build
 
-This stage only applies to Dockerfile.Freedoom, and will download + compile a copy of Freedoom.
-I recommend using a precompiled binary and Dockerfile instead as this is likely not compatible with the copy clients will have, and will take extra space.
+This stage only applies to Dockerfile.Freedoom, and will download from source and compile a copy of Freedoom.
 
 ### Runtime Stage
 
@@ -66,6 +63,10 @@ The `runserver.sh` script sets up the server environment, copies necessary files
    ```sh
    docker run -d -e CONFIGFILE="doom2.conf" -p 10666:10666/udp --name odamex-server odamex-server
    ```
+
+## Notes
+- WADs compiled from source will have a unique checksum and the server variable 
+
 
 ## Configuration
 
