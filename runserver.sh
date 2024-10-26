@@ -2,6 +2,7 @@
 
 oiwad=${IWAD:-"freedm.wad"}
 oconfigfile=${CONFIGFILE:-"default.cfg"}
+odaport=${ODAPORT:-10667}
 
 for item in iwads pwads config; do
 echo "Checking ${item} folder."
@@ -13,12 +14,10 @@ echo "Using config file: $oconfigfile"
 test -e /app/config/$oconfigfile || echo "Config file not found"
 
 echo "Using IWAD: $oiwad"
-mkdir /home/ubuntu/.odamex
-cp /app/odamex.wad /home/ubuntu/.odamex && \
-cp /app/iwads/${oiwad} /home/ubuntu/.odamex && \
-cp /app/config/${oconfigfile} /home/ubuntu/.odamex/odasrv.cfg
-
-rm /app/iwads/*
+mkdir /home/odamex/.odamex
+cp /app/odamex.wad /home/odamex/.odamex && \
+cp /app/iwads/${oiwad} /home/odamex/.odamex && \
+cp /app/config/${oconfigfile} /home/odamex/.odamex/odasrv.cfg
 
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 pwadparams=""
@@ -29,6 +28,6 @@ done
 cmd="/app/server/odasrv -iwad /app/iwads/${oiwad} -file /app/iwads/odamex.wad ${pwadparams}"
 echo "Command: $cmd"
 
-/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams}
+/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport}
 #-file "/app/iwads/odamex.wad" \
 
