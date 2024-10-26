@@ -21,14 +21,16 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
 # Runtime Stage
 
 FROM ubuntu:latest AS server
+ENV ODAPORT=10667
 WORKDIR /app 
-COPY --from=srv --chown=ubuntu /app/odamex/build/server/odasrv /app/server/odasrv
-COPY --from=WAD --chown=ubuntu /app/odamex/build/wad/odamex.wad /app
-COPY --chown=ubuntu configs /app/config
-COPY --chown=ubuntu iwads /app/iwads
-COPY --chown=ubuntu pwads /app/pwads
-COPY --chown=ubuntu runserver.sh /app
-USER ubuntu
+RUN useradd -m odamex && chown -R odamex:odamex /app
+COPY --chown=odamex configs /app/config
+COPY --chown=odamex iwads /app/iwads
+COPY --chown=odamex pwads /app/pwads
+COPY --chown=odamex runserver.sh /app
+COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
+COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app
+USER odamex
 # ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]
-EXPOSE 10666/udp
+EXPOSE ${ODAPORT}/udp

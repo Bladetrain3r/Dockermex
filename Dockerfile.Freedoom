@@ -30,13 +30,17 @@ RUN make
 
 FROM ubuntu:latest AS server
 WORKDIR /app 
-COPY --from=freedoom-builder --chown=ubuntu /app/freedoom/wads /app/iwads
-COPY --from=srv --chown=ubuntu /app/odamex/build/server/odasrv /app/server/odasrv
-COPY --from=WAD --chown=ubuntu /app/odamex/build/wad/odamex.wad /app
-COPY --chown=ubuntu configs /app/config
-COPY --chown=ubuntu iwads /app/iwads
-COPY --chown=ubuntu pwads /app/pwads
-COPY --chown=ubuntu runserver.sh /app
+# Set user and permissions
+RUN useradd -m odamex && chown -R odamex:odamex /app
+COPY --from=freedoom-builder --chown=odamex /app/freedoom/wads /app/iwads
+COPY --chown=odamex configs /app/config
+COPY --chown=odamex iwads /app/iwads
+COPY --chown=odamex pwads /app/pwads
+COPY --chown=odamex runserver.sh /app
+COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
+COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app
+USER odamex
+
 USER ubuntu
 # ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]
