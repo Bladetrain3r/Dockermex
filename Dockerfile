@@ -21,7 +21,7 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
 # Runtime Stage
 
 FROM ubuntu:latest AS server
-ENV ODAPORT=10667
+ENV ODAPORT=10666
 WORKDIR /app 
 RUN useradd -m odamex && chown -R odamex:odamex /app
 COPY --chown=odamex configs /app/config
