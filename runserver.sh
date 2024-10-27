@@ -36,7 +36,7 @@ if ! grep -q "coop" /app/config/${oconfigfile}; then
   echo $maplist
 fi
 
-if [[ "$oconfigfile" == "coop-nuts.cfg"]]; then
+if [[ "$oconfigfile" == "coop-nuts.cfg" ]]; then
   maplist="+map MAP01"
 fi
 
