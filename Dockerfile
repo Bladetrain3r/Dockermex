@@ -30,7 +30,7 @@ COPY --chown=odamex iwads /app/iwads
 COPY --chown=odamex pwads /app/pwads
 COPY --chown=odamex runserver.sh /app
 COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
-COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app
+COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app/iwads
 RUN dos2unix /app/runserver.sh
 USER odamex
 # ENTRYPOINT ["/bin/sh"]
