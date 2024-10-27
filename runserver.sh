@@ -15,7 +15,7 @@ test -e /app/config/$oconfigfile || echo "Config file not found"
 
 echo "Using IWAD: $oiwad"
 mkdir /home/odamex/.odamex
-cp /app/odamex.wad /home/odamex/.odamex && \
+# cp /app/odamex.wad /home/odamex/.odamex && \
 cp /app/iwads/${oiwad} /home/odamex/.odamex && \
 cp /app/config/${oconfigfile} /home/odamex/.odamex/odasrv.cfg
 
