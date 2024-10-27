@@ -24,12 +24,14 @@ FROM ubuntu:latest AS server
 ENV ODAPORT=10666
 WORKDIR /app 
 RUN useradd -m odamex && chown -R odamex:odamex /app
+RUN apt update && apt install -y dos2unix
 COPY --chown=odamex configs /app/config
 COPY --chown=odamex iwads /app/iwads
 COPY --chown=odamex pwads /app/pwads
 COPY --chown=odamex runserver.sh /app
 COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
 COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app
+RUN dos2unix /app/runserver.sh
 USER odamex
 # ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]

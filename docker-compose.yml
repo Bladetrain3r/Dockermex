@@ -2,7 +2,7 @@ services:
   odamex_server:
     build:
       context: .
-    image: zerofuchs/odamex:latest
+    image: odamex:latest
     container_name: odamex_compose
     environment:
       - IWAD=freedoom1.wad           # Specify the default IWAD here
@@ -24,7 +24,7 @@ services:
   odamex_server2:
     build:
       context: .
-    image: zerofuchs/odamex:latest
+    image: odamex:latest
     container_name: odamex_compose2
     environment:
       - IWAD=freedoom2.wad           # Specify the default IWAD here
@@ -46,7 +46,7 @@ services:
   odamex_serverdm:
     build:
       context: .
-    image: zerofuchs/odamex:latest
+    image: odamex:latest
     container_name: odamex_composedm
     environment:
       - ODAPORT=10567

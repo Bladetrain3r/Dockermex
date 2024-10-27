@@ -2,8 +2,8 @@ import socket
 
 # Configuration
 LISTEN_HOST = '0.0.0.0'     # Listen on all network interfaces
-LISTEN_PORT = 10667         # Port where players will connect (public-facing)
-TARGET_HOST = '172.17.0.2'  # Docker container IP running Odamex
+LISTEN_PORT = 10666         # Port where players will connect (public-facing)
+TARGET_HOST = '127.0.0.1'  # Docker container IP running Odamex
 TARGET_PORT = 10666         # Port inside the container where Odamex is listening
 
 # Buffer size for UDP packets
