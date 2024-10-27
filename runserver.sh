@@ -15,7 +15,7 @@ test -e /app/config/$oconfigfile || echo "Config file not found"
 
 echo "Using IWAD: $oiwad"
 mkdir /home/odamex/.odamex
-# cp /app/odamex.wad /home/odamex/.odamex && \
+cp /app/iwads/odamex.wad /home/odamex/.odamex && \
 cp /app/iwads/${oiwad} /home/odamex/.odamex && \
 cp /app/config/${oconfigfile} /home/odamex/.odamex/odasrv.cfg
 
@@ -25,7 +25,7 @@ for file in $pwads; do
   pwadparams="$pwadparams -file /app/pwads/${file}"
 done
 
-cmd="/app/server/odasrv -iwad /app/iwads/${oiwad} -file /app/iwads/odamex.wad ${pwadparams}"
+cmd="/app/server/odasrv -iwad /app/iwads/${oiwad} ${pwadparams}"
 echo "Command: $cmd"
 
 /app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport}
