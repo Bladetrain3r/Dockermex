@@ -2,6 +2,14 @@
 
 This repository contains the Docker setup for running an Odamex server. The setup includes building the server from source and running it with custom IWADs and PWADs.
 
+## Prerequisites
+
+### Installing Docker
+
+Find instructions for Docker Desktop to run locally here: https://docs.docker.com/desktop/
+To run Docker on a server, see here (and don't forget to install docker-compose): https://docs.docker.com/engine/install/ubuntu/
+
+
 ## Repository Structure
 
 - Dockerfile
