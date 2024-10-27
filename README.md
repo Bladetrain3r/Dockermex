@@ -62,6 +62,42 @@ The `runserver.sh` script sets up the server environment, copies necessary files
    docker run -d -e CONFIGFILE="doom2.conf" -p 10666:10666/udp --name odamex-server odamex-server
    ```
 
+## Docker Compose Files
+
+This repository includes Docker Compose files to simplify the deployment of multiple Odamex server instances.
+
+### docker-compose.yml
+
+The `docker-compose.yml` file defines three services:
+
+- **odamex_server**: Runs an Odamex server with the default IWAD `freedoom1.wad` and configuration file `singleplayer.cfg`. It maps UDP port 10666 from the container to the host.
+- **odamex_server2**: Runs a second Odamex server with the default IWAD `freedoom2.wad` and configuration file `singleplayer.cfg`. It maps UDP port 10566 from the container to the host.
+- **odamex_serverdm**: Runs an Odamex server for deathmatch with no specific IWAD or configuration file. It maps UDP port 10567 from the container to the host.
+
+Each service mounts the `iwads`, `pwads`, and `configs` directories from the host to the container, allowing for easy customization and configuration.
+
+To start the services defined in `docker-compose.yml`, run:
+
+```sh
+docker-compose up -d
+```
+
+### docker-compose-dm-spread.yml
+
+The `docker-compose-dm-spread.yml` file is designed for running multiple deathmatch servers with different configurations. Each service can be customized with specific IWADs, PWADs, and configuration files.
+
+To start the services defined in `docker-compose-dm-spread.yml`, run:
+
+```sh
+docker-compose -f docker-compose-dm-spread.yml up -d
+```
+
+### Customization
+
+You can customize the server configurations by modifying the environment variables and volume mounts in the Compose files. For example, to change the IWAD or configuration file, update the `IWAD` and `CONFIGFILE` environment variables in the respective service definitions.
+
+For more detailed information on the available configuration options, refer to the [Odamex Wiki](https://github.com/odamex/odamex/wiki/Console-Variables).
+
 ## Notes
 - WADs compiled from source will have a unique checksum so will need to be provided to clients.
 
