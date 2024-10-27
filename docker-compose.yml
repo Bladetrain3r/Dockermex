@@ -6,7 +6,7 @@ services:
     container_name: odamex_compose
     environment:
       - IWAD=freedoom1.wad           # Specify the default IWAD here
-      - CONFIGFILE=singleplayer.cfg     # Specify the configuration file if needed
+      - CONFIGFILE=default.cfg    # Specify the configuration file if needed
       - ODAPORT=10666
     ports:
       - 10666:10666/udp        # Map container UDP port to host
@@ -28,7 +28,7 @@ services:
     container_name: odamex_compose2
     environment:
       - IWAD=freedoom2.wad           # Specify the default IWAD here
-      - CONFIGFILE=singleplayer.cfg     # Specify the configuration file if needed
+      - CONFIGFILE=default.cfg     # Specify the configuration file if needed
       - ODAPORT=10566
     ports:
       - 10566:10566/udp         # Map container UDP port to host
