@@ -1,5 +1,3 @@
-Sure, here is a README in GitHub Markdown format:
-
 # Odamex Docker Setup
 
 This repository contains the Docker setup for running an Odamex server. The setup includes building the server from source and running it with custom IWADs and PWADs.
