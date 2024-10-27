@@ -36,6 +36,10 @@ if ! grep -q "coop" /app/config/${oconfigfile}; then
   echo $maplist
 fi
 
+if [[ "$oconfigfile" == "coop-nuts.cfg"]]; then
+  maplist="+map MAP01"
+fi
+
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 pwadparams=""
 for file in $pwads; do
@@ -45,5 +49,5 @@ done
 cmd="/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport} ${maplist}"
 echo "Command: $cmd"
 
-/app/server/odasrv -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist}
+/app/server/odasrv +set sv_waddownload 1 -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist}
 

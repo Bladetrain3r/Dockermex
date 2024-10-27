@@ -1,0 +1,22 @@
+services:
+  odamex_server:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_compose
+    environment:
+      - IWAD=freedoom2.wad           # Specify the default IWAD here
+      - CONFIGFILE=coop-nuts.cfg    # Specify the configuration file if needed
+      - ODAPORT=10565
+    ports:
+      - 10565:10565/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "1"             # Restrict to half a CPU core
+          memory: "512M"          # Restrict memory to 512 MB
+    restart: unless-stopped
