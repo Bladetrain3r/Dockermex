@@ -37,7 +37,7 @@ if ! grep -q "coop" /app/config/${oconfigfile}; then
 fi
 
 if [[ "$oconfigfile" == "coop-nuts.cfg" ]]; then
-  maplist="+map MAP01"
+  maplist="+addmap map01 nuts.wad"
 fi
 
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
