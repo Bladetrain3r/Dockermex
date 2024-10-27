@@ -42,3 +42,23 @@ services:
           cpus: "0.2"             # Restrict to half a CPU core
           memory: "256M"          # Restrict memory to 512 MB
     restart: unless-stopped
+
+  odamex_serverdm:
+    build:
+      context: .
+    image: zerofuchs/odamex:latest
+    container_name: odamex_composedm
+    environment:
+      - ODAPORT=10567
+    ports:
+      - 10567:10567/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./pwads:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict to half a CPU core
+          memory: "256M"          # Restrict memory to 512 MB
+    restart: unless-stopped
