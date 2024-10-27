@@ -99,7 +99,7 @@ Odamex is licensed under the [GNU GPL2 public license](https://github.com/odamex
 Freedoom is licensed under [this license](https://github.com/freedoom/freedoom/blob/master/COPYING.adoc)
 Deutex is licensed under a [GPL2 license with additional third party licenses](https://github.com/Doom-Utils/deutex/blob/master/LICENSE)
 
-## Credits:
-[Odamex](https://github.com/odamex/odamex/blob/stable/MAINTAINERS)
-[FreeDoom](https://github.com/freedoom/freedoom/blob/master/CREDITS)
-[Deutex](https://github.com/Doom-Utils/deutex/blob/master/AUTHORS)
+# Credits:
+## [Odamex](https://github.com/odamex/odamex/blob/stable/MAINTAINERS)
+## [FreeDoom](https://github.com/freedoom/freedoom/blob/master/CREDITS)
+## [Deutex](https://github.com/Doom-Utils/deutex/blob/master/AUTHORS)
