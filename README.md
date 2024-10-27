@@ -65,8 +65,7 @@ The `runserver.sh` script sets up the server environment, copies necessary files
    ```
 
 ## Notes
-- WADs compiled from source will have a unique checksum and the server variable 
-
+- WADs compiled from source will have a unique checksum so will need to be provided to clients.
 
 ## Configuration
 
