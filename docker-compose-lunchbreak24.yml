@@ -1,0 +1,65 @@
+services:
+  odamex_lunchbreak_1:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_lunchbreak_1
+    environment:
+      - IWAD=plutonia.wad          # Specify the default IWAD here
+      - CONFIGFILE=coop-lunchbreak.cfg    # Specify the configuration file if needed
+      - ODAPORT=10666
+    ports:
+      - 10666:10666/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
+      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"             # Restrict to half a CPU core
+          memory: "64M"          # Restrict memory to 512 MB
+    restart: unless-stopped
+
+  odamex_lunchbreak_2:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_lunchbreak_2
+    environment:
+      - IWAD=plutonia.wad           # Specify the default IWAD here
+      - CONFIGFILE=coop-lunchbreak.cfg     # Specify the configuration file if needed
+      - ODAPORT=10566
+    ports:
+      - 10566:10566/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
+      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"             # Restrict to half a CPU core
+          memory: "64M"          # Restrict memory to 512 MB
+    restart: unless-stopped
+
+  wad-server:
+    image: nginx:alpine
+    container_name: wads_nuts
+    volumes:
+      - ./iwads/freeware:/iwads
+      - ./pwads:/pwads
+    ports:
+      - "8080:80"
+    entrypoint: |
+      sh -c '
+      cp /iwads/* /usr/share/nginx/html/
+      cp /pwads/lunchbreak24/* /usr/share/nginx/html/
+      nginx -g "daemon off;"
+      '
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"             # Restrict to a quarter CPU core
+          memory: "256M"          # Restrict memory to 256 MB
+    restart: unless-stopped

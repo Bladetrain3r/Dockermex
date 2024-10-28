@@ -62,3 +62,24 @@ services:
           cpus: "0.2"             # Restrict to half a CPU core
           memory: "256M"          # Restrict memory to 512 MB
     restart: unless-stopped
+
+  wad-server:
+    image: nginx:alpine
+    container_name: wads_nuts
+    volumes:
+      - ./iwads/freeware:/iwads
+      - ./pwads:/pwads
+    ports:
+      - "8080:80"
+    entrypoint: |
+      sh -c '
+      cp /iwads/* /usr/share/nginx/html/
+      cp -r /pwads/* /usr/share/nginx/html/
+      nginx -g "daemon off;"
+      '
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"             # Restrict to a quarter CPU core
+          memory: "256M"          # Restrict memory to 256 MB
+    restart: unless-stopped
