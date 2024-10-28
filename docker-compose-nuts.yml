@@ -11,7 +11,7 @@ services:
     ports:
       - 10565:10565/udp        # Map container UDP port to host
     volumes:
-      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
       - ./pwads/nuts:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -25,7 +25,7 @@ services:
     image: nginx:alpine
     container_name: wad_server
     volumes:
-      - ./iwads:/iwads
+      - ./iwads/freeware:/iwads
       - ./pwads/nuts:/pwads
     ports:
       - "8080:80"

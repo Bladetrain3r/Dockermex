@@ -11,7 +11,7 @@ services:
     ports:
       - 10666:10666/udp        # Map container UDP port to host
     volumes:
-      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
       - ./pwads/duel:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -33,7 +33,7 @@ services:
     ports:
       - 10566:10566/udp         # Map container UDP port to host
     volumes:
-      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
       - ./pwads/duel:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -54,7 +54,7 @@ services:
     ports:
       - 10567:10567/udp         # Map container UDP port to host
     volumes:
-      - ./iwads:/app/iwads        # Mount host IWADs folder
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
       - ./pwads/duel:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
