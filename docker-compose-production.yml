@@ -194,20 +194,20 @@ services:
           memory: "256M"          # Restrict memory to 256 MB
     restart: unless-stopped
 
-  odamex_lunchbreak_1:
+  odamex_final_doom_1:
     build:
       context: .
     image: odamex:latest
-    container_name: odamex_lunchbreak_1
+    container_name: odamex_final_doom_1
     environment:
-      - IWAD=plutonia.wad          # Specify the default IWAD here
-      - CONFIGFILE=coop-lunchbreak.cfg    # Specify the configuration file if needed
+      - IWAD=tnt.wad          # Specify the default IWAD here
+      - CONFIGFILE=coop-doom.cfg    # Specify the configuration file if needed
       - ODAPORT=10573
     ports:
       - 10573:10573/udp        # Map container UDP port to host
     volumes:
       - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
-      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
       resources:
@@ -216,20 +216,20 @@ services:
           memory: "64M"          # Restrict memory to 512 MB
     restart: unless-stopped
 
-  odamex_lunchbreak_2:
+  odamex_final_doom_2:
     build:
       context: .
     image: odamex:latest
-    container_name: odamex_lunchbreak_2
+    container_name: odamex_final_doom_2
     environment:
       - IWAD=plutonia.wad           # Specify the default IWAD here
-      - CONFIGFILE=coop-lunchbreak.cfg     # Specify the configuration file if needed
+      - CONFIGFILE=coop-doom.cfg     # Specify the configuration file if needed
       - ODAPORT=10574
     ports:
       - 10574:10574/udp         # Map container UDP port to host
     volumes:
       - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
-      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
       resources:
@@ -252,7 +252,6 @@ services:
       cp /pwads/coop/* /usr/share/nginx/html/
       cp /pwads/nuts/* /usr/share/nginx/html/
       cp /pwads/dv2/* /usr/share/nginx/html/
-      cp /pwads/lunchbreak24/* /usr/share/nginx/html/
       nginx -g "daemon off;"
       '
     deploy:
