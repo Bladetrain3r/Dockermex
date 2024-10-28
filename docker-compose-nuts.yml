@@ -12,11 +12,32 @@ services:
       - 10565:10565/udp        # Map container UDP port to host
     volumes:
       - ./iwads:/app/iwads        # Mount host IWADs folder
-      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
+      - ./pwads/nuts:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
       resources:
         limits:
-          cpus: "1"             # Restrict to half a CPU core
+          cpus: "1" 
           memory: "512M"          # Restrict memory to 512 MB
+    restart: unless-stopped
+
+  wad-server:
+    image: nginx:alpine
+    container_name: wad_server
+    volumes:
+      - ./iwads:/iwads
+      - ./pwads/nuts:/pwads
+    ports:
+      - "8080:80"
+    entrypoint: |
+      sh -c '
+      cp /iwads/* /usr/share/nginx/html/
+      cp /pwads/* /usr/share/nginx/html/
+      nginx -g "daemon off;"
+      '
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"             # Restrict to a quarter CPU core
+          memory: "256M"          # Restrict memory to 256 MB
     restart: unless-stopped
