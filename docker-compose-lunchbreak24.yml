@@ -7,9 +7,9 @@ services:
     environment:
       - IWAD=plutonia.wad          # Specify the default IWAD here
       - CONFIGFILE=coop-lunchbreak.cfg    # Specify the configuration file if needed
-      - ODAPORT=10666
+      - ODAPORT=10573
     ports:
-      - 10666:10666/udp        # Map container UDP port to host
+      - 10573:10573/udp        # Map container UDP port to host
     volumes:
       - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
       - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
@@ -29,9 +29,9 @@ services:
     environment:
       - IWAD=plutonia.wad           # Specify the default IWAD here
       - CONFIGFILE=coop-lunchbreak.cfg     # Specify the configuration file if needed
-      - ODAPORT=10566
+      - ODAPORT=10574
     ports:
-      - 10566:10566/udp         # Map container UDP port to host
+      - 10574:10574/udp         # Map container UDP port to host
     volumes:
       - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
       - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
