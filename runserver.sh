@@ -22,7 +22,7 @@ cp /app/iwads/odamex.wad /home/odamex/.odamex && \
 cp /app/iwads/${oiwad} /home/odamex/.odamex && \
 cp /app/config/${oconfigfile} /home/odamex/.odamex/odasrv.cfg
 
-if ! grep -v "coop" /app/config/${oconfigfile}; then
+if grep -v "coop" /app/config/${oconfigfile}; then
   maplist=""
   if [[ "$oiwad" == "doom.wad" || "$oiwad" == "freedoom1.wad" ]]; then
     mapstring=${doom1mapstring}
