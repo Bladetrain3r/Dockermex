@@ -17,8 +17,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          # Restrict memory to 128 MB
     restart: unless-stopped
 
   odamex_duel_freedoom2:
@@ -39,8 +39,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          # Restrict memory to 128 MB
     restart: unless-stopped
 
   odamex_duel_freedm:
@@ -60,8 +60,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          # Restrict memory to 128 MB
     restart: unless-stopped
     
   odamex_dm_freedm1:
@@ -82,7 +82,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "192M"          # Restrict memory to 128 MB
+          memory: "64M"          # Restrict memory to 128 MB
     restart: unless-stopped
 
   odamex_dm_freedm2:
@@ -103,7 +103,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "192M"          # Restrict memory to 192 MB
+          memory: "64M"          # Restrict memory to 192 MB
     restart: unless-stopped
 
   odamex_coop_freedoom1:
@@ -125,7 +125,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "192M"          # Restrict memory to 192 MB
+          memory: "64M"          # Restrict memory to 192 MB
     restart: unless-stopped    
 
   odamex_coop_freedoom2:
@@ -147,7 +147,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "192M"          # Restrict memory to 192 MB
+          memory: "64M"          # Restrict memory to 192 MB
     restart: unless-stopped
 
   odamex_coop_nuts:
@@ -168,8 +168,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1" 
-          memory: "256M"          # Restrict memory to 256 MB
+          cpus: "1.5" 
+          memory: "384M"          # Restrict memory to 256 MB
     restart: unless-stopped
 
   odamex_coop_deus_vultII:
@@ -190,7 +190,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1" 
+          cpus: "0.2" 
           memory: "256M"          # Restrict memory to 256 MB
     restart: unless-stopped
 
@@ -212,29 +212,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict to half a CPU core
-          memory: "64M"          # Restrict memory to 512 MB
-    restart: unless-stopped
-
-  odamex_lunchbreak_2:
-    build:
-      context: .
-    image: odamex:latest
-    container_name: odamex_lunchbreak_2
-    environment:
-      - IWAD=plutonia.wad           # Specify the default IWAD here
-      - CONFIGFILE=coop-lunchbreak.cfg     # Specify the configuration file if needed
-      - ODAPORT=10574
-    ports:
-      - 10574:10574/udp         # Map container UDP port to host
-    volumes:
-      - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
-      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
-    deploy:
-      resources:
-        limits:
-          cpus: "0.1"             # Restrict to half a CPU core
+          cpus: "0.2"             # Restrict to half a CPU core
           memory: "64M"          # Restrict memory to 512 MB
     restart: unless-stopped
 
@@ -258,6 +236,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.25"             # Restrict to a quarter CPU core
+          cpus: "0.2"             # Restrict to a quarter CPU core
           memory: "256M"          # Restrict memory to 256 MB
     restart: unless-stopped
