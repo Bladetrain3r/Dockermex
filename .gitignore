@@ -7,3 +7,7 @@ GOALS.md
 CONCEPT.md
 todo
 wadTEST/aws.notes
+ssl/*.crt
+ssl/*.cer
+ssl/*.key
+html/*

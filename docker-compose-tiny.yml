@@ -1,0 +1,107 @@
+services:
+  odamex_tiny:
+    build:
+      context: .
+    image: odamex:tiny
+    container_name: odamex_tiny
+    environment:
+      - IWAD=freedoom1.wad           # Specify the default IWAD here
+      - CONFIGFILE=coop-doom.cfg    # Specify the configuration file if needed
+      - ODAPORT=10666
+    ports:
+      - 10666:10666/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"             # Restrict to half a CPU core
+          memory: "32M"          # Restrict memory to 512 MB
+    networks:
+      - wad-net
+    restart: unless-stopped
+
+  odamex_oku2:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_oku2
+    environment:
+      - IWAD=freedoom2.wad           # Specify the default IWAD here
+      - CONFIGFILE=coop-oku.cfg     # Specify the configuration file if needed
+      - ODAPORT=10566
+    ports:
+      - 10566:10566/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/oku:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "1"             # Restrict to half a CPU core
+          memory: "1024M"          # Restrict memory to 512 MB
+    networks:
+      - wad-net
+    restart: unless-stopped
+
+  wad-server:
+    image: nginx:alpine
+    container_name: wads_nuts
+    environment:
+      - htpassword=replaceme
+    volumes:
+      - ./iwads/freeware:/iwads
+      - ./pwads:/pwads
+      - ./nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./html:/usr/share/nginx/html
+      - ./ssl/private.key:/etc/nginx/ssl/private.key
+      - ./ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt
+    ports:
+      - "443:443"
+    depends_on:
+      - wad-upload-api
+    entrypoint: |
+      sh -c '
+      apk add --no-cache apache2-utils
+      if [ ! -f /etc/nginx/.htpasswd ]; then
+        htpasswd -cb /etc/nginx/.htpasswd admin replaceme
+      fi
+      nginx -g "daemon off;" &
+      wait
+      '
+    networks:
+      wad-net:
+        aliases: ["wad-server"]
+
+  wad-upload-api:
+    image: wad-upload:latest
+    volumes:
+      - ./pwads:/pwads
+      - ./Python:/app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    entrypoint: |
+      sh -c '
+      pip install -r requirements.txt
+      python Api_Upload.py
+      '
+    deploy:
+      resources:
+        limits:
+          cpus: "1"             # Restrict to half a CPU core
+          memory: "128M"          # Restrict memory to 512 MB
+    networks:
+      wad-net:
+        aliases:
+          - wad-upload-api
+
+    restart: unless-stopped
+
+networks:
+  wad-net:
+    driver: bridge

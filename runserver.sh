@@ -45,5 +45,5 @@ done
 cmd="/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport} ${maplist}"
 echo "Command: $cmd"
 
-/app/server/odasrv +set sv_waddownload 1 -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist}
+/app/server/odasrv +set sv_waddownload 1 -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist} > /home/odamex/.odamex/odasrv.log
 
