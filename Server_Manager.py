@@ -28,7 +28,7 @@ def find_available_port():
         if not port_in_use:
             print(f"Port {port} is available")
             return port
-    raise RuntimeError("No available ports")
+    return False
 
 
 def create_docker_service(config_name):
@@ -67,9 +67,13 @@ def create_docker_service(config_name):
         odamount: {'bind': '/app/iwads/odamex.wad', 'mode': 'ro'},
     }
 
+    if not port:
+        print("No available ports found")
+        return
+
     # Run the container
     container = client.containers.run(
-        image="odamex:latest",
+        image="odamex_managed:latest",
         name=f"odamex_{strip_config}",
         ports={f'{port}/udp':port},
         environment=env_vars,
