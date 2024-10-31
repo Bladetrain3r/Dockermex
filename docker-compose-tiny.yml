@@ -74,13 +74,16 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wad-server"]
+        aliases: ["wad-server", "odamex.zerofuchs.co.za"]
 
   wad-upload-api:
     image: wad-upload:latest
     volumes:
+      - ./iwads:/iwads
       - ./pwads:/pwads
       - ./Python:/app
+      - ./service-configs:/service-configs
+      - ./configs:/configs
     ports:
       - "5000:5000"
     environment:
@@ -99,7 +102,6 @@ services:
       wad-net:
         aliases:
           - wad-upload-api
-
     restart: unless-stopped
 
 networks:
