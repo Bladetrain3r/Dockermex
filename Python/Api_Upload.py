@@ -56,16 +56,7 @@ def upload_file():
             matched_commercial = True
         for comm_name, comm_data in commercial_iwads.items():
             if upload_full == comm_data['filename'].lower() or upload_name == comm_name or matched_commercial is True:
-                matched_commercial = True
-                # If hash is provided, check if it's a legitimate copy
-                if 'hash' in request.form and request.form['hash'].lower() == comm_data['hash']:
-                    return (
-                        f'This appears to be a legitimate copy of '
-                        f'{comm_data["filename"]}. Please place it in the '
-                        'commercial IWADs folder.', 400
-                    )
-                else:
-                    return f'File matches a commercial IWAD: {comm_data["filename"]}', 400
+                return f'File matches a commercial IWAD: {comm_name}', 400
     file.save(os.path.join(folder, filename))
 
     return jsonify({
@@ -82,6 +73,7 @@ def list_configs():
 @app.route('/list-pwads', methods=['GET'])
 def list_pwads():
     wads = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.lower().endswith('.wad')]
+    wads.insert(0, '')  # Add an empty field as the first choice
     return jsonify(wads)
 
 @app.route('/list-iwads', methods=['GET'])
