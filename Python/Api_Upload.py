@@ -52,12 +52,18 @@ def upload_file():
 
         # Check if the file matches any commercial IWAD names
         matched_commercial = False
+        if calculated_hash in [comm_data['hash'] for comm_data in commercial_iwads.values()]:
+            matched_commercial = True
         for comm_name, comm_data in commercial_iwads.items():
-            if upload_full == comm_data['filename'].lower() or upload_name == comm_name:
+            if upload_full == comm_data['filename'].lower() or upload_name == comm_name or matched_commercial is True:
                 matched_commercial = True
                 # If hash is provided, check if it's a legitimate copy
                 if 'hash' in request.form and request.form['hash'].lower() == comm_data['hash']:
-                    return f'This appears to be a legitimate copy of {comm_data["filename"]}. Please place it in the commercial IWADs folder.', 400
+                    return (
+                        f'This appears to be a legitimate copy of '
+                        f'{comm_data["filename"]}. Please place it in the '
+                        'commercial IWADs folder.', 400
+                    )
                 else:
                     return f'File matches a commercial IWAD: {comm_data["filename"]}', 400
     file.save(os.path.join(folder, filename))
