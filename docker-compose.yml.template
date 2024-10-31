@@ -17,5 +17,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict to half a CPU core
-          memory: "64M"          # Restrict memory to 512 MB
+          cpus: "0.2"             
+          memory: "64M"          

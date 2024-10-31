@@ -12,3 +12,4 @@ ssl/*.cer
 ssl/*.key
 
 html/*/placepwadshere.txt
+configs/coop-local.cfg

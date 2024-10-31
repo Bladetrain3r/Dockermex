@@ -48,12 +48,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1"             # Restrict to half a CPU core
-          memory: "128M"          # Restrict memory to 512 MB
+          cpus: "1"             
+          memory: "128M"          
     networks:
       wad-net:
         aliases:
-          - wad-upload-api
+          - wad-upload-api-server
     restart: unless-stopped
 
 networks:
