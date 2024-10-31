@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          memory: "128M"          
     restart: unless-stopped
 
   odamex_duel_freedoom2:
@@ -40,7 +40,7 @@ services:
       resources:
         limits:
           cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          memory: "128M"          
     restart: unless-stopped
 
   odamex_duel_freedm:
@@ -61,5 +61,5 @@ services:
       resources:
         limits:
           cpus: "0.1"             # Restrict CPU
-          memory: "128M"          # Restrict memory to 128 MB
+          memory: "128M"          
     restart: unless-stopped

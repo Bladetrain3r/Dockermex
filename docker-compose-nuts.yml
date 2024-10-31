@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "1" 
-          memory: "512M"          # Restrict memory to 512 MB
+          memory: "512M"          
     restart: unless-stopped
 
   wad-server:
@@ -38,6 +38,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.25"             # Restrict to a quarter CPU core
-          memory: "256M"          # Restrict memory to 256 MB
+          cpus: "0.25"             
+          memory: "256M"          
     restart: unless-stopped

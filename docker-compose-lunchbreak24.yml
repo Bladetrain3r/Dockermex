@@ -17,8 +17,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict to half a CPU core
-          memory: "64M"          # Restrict memory to 512 MB
+          cpus: "0.1"             
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_lunchbreak_2:
@@ -39,8 +39,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict to half a CPU core
-          memory: "64M"          # Restrict memory to 512 MB
+          cpus: "0.1"             
+          memory: "64M"          
     restart: unless-stopped
 
   wad-server:
@@ -60,6 +60,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.25"             # Restrict to a quarter CPU core
-          memory: "256M"          # Restrict memory to 256 MB
+          cpus: "0.25"             
+          memory: "256M"          
     restart: unless-stopped

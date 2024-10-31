@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 128 MB
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_duel_freedoom2:
@@ -40,7 +40,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 128 MB
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_duel_freedm:
@@ -61,7 +61,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 128 MB
+          memory: "64M"          
     restart: unless-stopped
     
   odamex_dm_freedm1:
@@ -82,7 +82,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 128 MB
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_dm_freedm2:
@@ -103,7 +103,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 192 MB
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_coop_freedoom1:
@@ -125,7 +125,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 192 MB
+          memory: "64M"          
     restart: unless-stopped    
 
   odamex_coop_freedoom2:
@@ -147,7 +147,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             # Restrict CPU
-          memory: "64M"          # Restrict memory to 192 MB
+          memory: "64M"          
     restart: unless-stopped
 
   odamex_coop_nuts:
@@ -169,7 +169,7 @@ services:
       resources:
         limits:
           cpus: "1.5" 
-          memory: "384M"          # Restrict memory to 256 MB
+          memory: "384M"          
     restart: unless-stopped
 
   odamex_coop_deus_vultII:
@@ -191,7 +191,7 @@ services:
       resources:
         limits:
           cpus: "0.2" 
-          memory: "256M"          # Restrict memory to 256 MB
+          memory: "256M"          
     restart: unless-stopped
 
   odamex_lunchbreak_1:
@@ -212,8 +212,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict to half a CPU core
-          memory: "64M"          # Restrict memory to 512 MB
+          cpus: "0.2"             
+          memory: "64M"          
     restart: unless-stopped
 
   wad-server:
@@ -236,6 +236,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict to a quarter CPU core
-          memory: "256M"          # Restrict memory to 256 MB
+          cpus: "0.2"             
+          memory: "256M"          
     restart: unless-stopped

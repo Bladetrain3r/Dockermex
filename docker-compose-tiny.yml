@@ -17,17 +17,17 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"             # Restrict to half a CPU core
-          memory: "32M"          # Restrict memory to 512 MB
+          cpus: "0.2"             
+          memory: "64M"          
     networks:
       - wad-net
     restart: unless-stopped
 
-  odamex_oku2:
+  odamex_tiny2:
     build:
       context: .
     image: odamex:latest
-    container_name: odamex_oku2
+    container_name: odamex_tiny2
     environment:
       - IWAD=freedoom2.wad           # Specify the default IWAD here
       - CONFIGFILE=coop-oku.cfg     # Specify the configuration file if needed
@@ -36,20 +36,20 @@ services:
       - 10566:10566/udp         # Map container UDP port to host
     volumes:
       - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
-      - ./pwads/oku:/app/pwads        # Mount host PWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
       resources:
         limits:
-          cpus: "1"             # Restrict to half a CPU core
-          memory: "1024M"          # Restrict memory to 512 MB
+          cpus: "0.2"             
+          memory: "64M"          
     networks:
       - wad-net
     restart: unless-stopped
 
   wad-server:
     image: nginx:alpine
-    container_name: wads_nuts
+    container_name: wads_server
     environment:
       - htpassword=replaceme
     volumes:
@@ -96,12 +96,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1"             # Restrict to half a CPU core
-          memory: "128M"          # Restrict memory to 512 MB
+          cpus: "1"             
+          memory: "128M"          
     networks:
       wad-net:
         aliases:
-          - wad-upload-api
+          - wad-upload-api-server
     restart: unless-stopped
 
 networks:
