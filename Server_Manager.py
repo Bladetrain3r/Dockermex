@@ -132,19 +132,4 @@ if __name__ == "__main__":
     print("Sleeping for 60 seconds")
     sleep(60)
     docker_teardown()
-
-# This section for testing
-"""
-if __name__ == "__main__":
-    config_name = 'coop-doom_freedm_.json'  # Substitute this or make it dynamic
-    create_docker_service(config_name)
-    config_name = "coop-doom_freedoom2_SCYTHE.json"
-    # wait a second
-    sleep(1)
-    create_docker_service(config_name)
-    # Sleep for the lifetime of the containers
-    sleep(60)
-    # Stop and remove the containers
-    stop_docker_service('coop-doom_freedm_.json')
-    stop_docker_service('coop-doom_freedoom2_SCYTHE.json')
-"""
+    print("Test Complete")
