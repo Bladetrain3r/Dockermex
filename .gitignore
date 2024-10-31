@@ -10,4 +10,5 @@ wadTEST/aws.notes
 ssl/*.crt
 ssl/*.cer
 ssl/*.key
-html/*
+
+html/*/placepwadshere.txt
