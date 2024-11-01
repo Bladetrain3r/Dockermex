@@ -7,3 +7,13 @@ GOALS.md
 CONCEPT.md
 todo
 wadTEST/aws.notes
+ssl/*.crt
+ssl/*.cer
+ssl/*.key
+
+html/*/placepwadshere.txt
+configs/coop-local.cfg
+html/bg.jpg
+html/bg2.jpg
+html/bg3.jpg
+html/bg4.jpg

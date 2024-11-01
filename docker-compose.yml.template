@@ -1,0 +1,21 @@
+services:
+  odamex_{{CONFIG}}:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_{{CONFIG}}
+    environment:
+      - IWAD={{IWAD}}           # Specify the default IWAD here
+      - CONFIGFILE={{CONFIGFILE}}    # Specify the configuration file if needed
+      - ODAPORT={{PORT}}
+    ports:
+      - {{PORT}}:{{PORT}}/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             
+          memory: "64M"          

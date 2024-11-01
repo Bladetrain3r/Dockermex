@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAD Upload</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="upload-container">
+        <h1>WAD Upload</h1>
+        <form class="upload-form" id="uploadForm" method="post" action="/submit-wad" enctype="multipart/form-data">
+            <input type="file" name="wadfile" accept=".wad" class="file-input" required>
+            <div class="error" id="fileError">Only .wad files are allowed!</div>
+            <button type="submit" class="submit-button" id="submitButton">Upload WAD</button>
+        </form>
+
+        <div class="pwad-list">
+            <h2>Available WADs</h2>
+            <iframe src="/pwads/" style="width: 100%; height: 400px; border: 1px solid #ccc;"></iframe>
+        </div>
+    </div>
+
+    <div class="upload-container">
+        <h2>Create Odamex Service Configuration</h2>
+        <form id="configForm">
+            <div class="form-group">
+                <label for="configSelect">Choose Config File:</label>
+                <select id="configSelect" name="configFile" required></select>
+            </div>
+            <div class="form-group">
+                <label for="pwadSelect">Choose PWAD File:</label>
+                <select id="pwadSelect" name="pwadFile" required></select>
+            </div>
+            <div class="form-group">
+                <label for="iwadSelect">Choose IWAD File:</label>
+                <select id="iwadSelect" name="iwadFile" required></select>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="submitConfig()" class="submit-button">Create Service Configuration</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        async function fetchFileList(endpoint, selectElementId) {
+            const response = await fetch(endpoint);
+            const files = await response.json();
+            const selectElement = document.getElementById(selectElementId);
+    
+            files.forEach(file => {
+                const option = document.createElement('option');
+                option.value = file;
+                option.text = file;
+                selectElement.add(option);
+            });
+        }
+    
+        async function submitConfig() {
+            const configFile = document.getElementById("configSelect").value;
+            const pwadFile = document.getElementById("pwadSelect").value;
+            const iwadFile = document.getElementById("iwadSelect").value;
+            const configData = { configFile, pwadFile, iwadFile };
+    
+            const response = await fetch('/submit-config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(configData)
+            });
+    
+            if (response.ok) {
+                alert('Configuration saved successfully.');
+            } else {
+                alert('Failed to save configuration.');
+            }
+        }
+    
+        // Populate dropdowns with files from /config and /pwads
+        window.onload = function() {
+            fetchFileList('/list-configs', 'configSelect');
+            fetchFileList('/list-pwads', 'pwadSelect');
+            fetchFileList('/list-iwads', 'iwadSelect');
+        };
+    </script>
+</body>
+</html>
