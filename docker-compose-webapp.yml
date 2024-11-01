@@ -25,7 +25,7 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wad-server", "odamex.zerofuchs.co.za"]
+        aliases: ["wad-server", "master"]
 
   wad-upload-api:
     image: wad-upload:latest

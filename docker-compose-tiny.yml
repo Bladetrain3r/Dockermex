@@ -73,7 +73,7 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wad-server", "odamex.zerofuchs.co.za"]
+        aliases: ["wad-server", "master"]
     restart: unless-stopped
 
   wad-upload-api:
