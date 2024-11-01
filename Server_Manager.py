@@ -4,10 +4,8 @@ from time import sleep
 import docker
 from docker.errors import NotFound
 
-
-
 BASE_PORT = 10564
-MAX_PORT = 10572
+MAX_PORT = 10576
 
 def find_available_port():
     """Find an available port in the defined range."""
@@ -79,7 +77,7 @@ def create_docker_service(config_name):
         ports={f'{port}/udp':port},
         environment=env_vars,
         volumes=volumes,
-        restart_policy={"Name": "no"},
+        restart_policy={"Name": "unless-stopped"},
         detach=True,
         mem_limit='64m',
         # 1cpu = 1,000,000,000 nano_cpus
@@ -95,14 +93,15 @@ def stop_docker_service(config_name):
     strip_config = config_name.strip('.json')
 
     try:
-        container = client.containers.get(f"odamex_{strip_config}")
+        container = client.containers.get(f"odamex_{strip_config}")    
     except NotFound:
         print(f"Container odamex_{strip_config} not found")
-        return
+        return False
 
     container.stop()
     container.remove()
     print(f"Container odamex_{strip_config} stopped and removed")
+    return True
 
 def docker_spinup():
     """Spin up all the containers in the service-configs directory."""
@@ -116,20 +115,30 @@ def docker_spinup():
                 print(f"Container {container.name} already running")
             except NotFound:
                 print(f"Attempting to launch {strip_config}")
-
                 sleep(1)
                 create_docker_service(item)
 
-def docker_teardown():
+def docker_teardown(expiries=False):
     """Stop and remove all the containers in the service-configs directory."""
     for item in os.listdir('./service-configs'):
         if item.endswith('.json'):
-            stop_docker_service(item)
+            if stop_docker_service(item):
+                if not expiries:
+                    continue
+                if f'{item}.expired' in os.listdir("./service-configs"):
+                    os.remove(f"./service-configs/{item}.expired")
+                os.rename(f"./service-configs/{item}", f"./service-configs/{item}.expired")
+
+
 
 if __name__ == "__main__":
     print("Test Run")
     docker_spinup()
     print("Sleeping for 60 seconds")
-    sleep(60)
-    docker_teardown()
-    print("Test Complete")
+    try:
+        sleep(600)
+        docker_teardown()
+        print("Test Complete")
+    except KeyboardInterrupt:
+        docker_teardown()
+        print("Test Complete")

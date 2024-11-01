@@ -1,0 +1,51 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f0f0f0;
+    background-image: url('./bg4.jpg');
+    background-size: cover; /* This will make sure the image covers the entire background */
+    background-position: absolute; /* This will make sure the image is positioned at the center */
+    background-repeat: no-repeat; /* This will prevent the image from repeating */
+}
+h1, h2 {
+    text-align: center;
+}
+.upload-container {
+    background: darkolivegreen;
+    opacity: 0.9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.file-input {
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+}
+.submit-button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.submit-button:hover {
+    background: #45a049;
+}
+.submit-button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+.error {
+    color: red;
+}

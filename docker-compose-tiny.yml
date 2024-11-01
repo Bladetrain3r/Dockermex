@@ -6,7 +6,7 @@ services:
     container_name: odamex_tiny
     environment:
       - IWAD=freedoom1.wad           # Specify the default IWAD here
-      - CONFIGFILE=coop-doom.cfg    # Specify the configuration file if needed
+      - CONFIGFILE=coop-local.cfg    # Specify the configuration file if needed
       - ODAPORT=10666
     ports:
       - 10666:10666/udp        # Map container UDP port to host
@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             
-          memory: "64M"          
+          memory: "48M"          
     networks:
       - wad-net
     restart: unless-stopped
@@ -26,14 +26,14 @@ services:
   odamex_tiny2:
     build:
       context: .
-    image: odamex:latest
+    image: odamex:tiny
     container_name: odamex_tiny2
     environment:
       - IWAD=freedoom2.wad           # Specify the default IWAD here
-      - CONFIGFILE=coop-oku.cfg     # Specify the configuration file if needed
-      - ODAPORT=10566
+      - CONFIGFILE=coop-local.cfg     # Specify the configuration file if needed
+      - ODAPORT=10565
     ports:
-      - 10566:10566/udp         # Map container UDP port to host
+      - 10565:10565/udp         # Map container UDP port to host
     volumes:
       - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
       - ./pwads/coop:/app/pwads        # Mount host PWADs folder
@@ -42,7 +42,7 @@ services:
       resources:
         limits:
           cpus: "0.2"             
-          memory: "64M"          
+          memory: "48M"          
     networks:
       - wad-net
     restart: unless-stopped
@@ -59,8 +59,7 @@ services:
       - ./html:/usr/share/nginx/html
       - ./ssl/private.key:/etc/nginx/ssl/private.key
       - ./ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt
-    ports:
-      - "443:443"
+    ports: ["443:443", "444:444"]
     depends_on:
       - wad-upload-api
     entrypoint: |
@@ -75,6 +74,7 @@ services:
     networks:
       wad-net:
         aliases: ["wad-server", "odamex.zerofuchs.co.za"]
+    restart: unless-stopped
 
   wad-upload-api:
     image: wad-upload:latest

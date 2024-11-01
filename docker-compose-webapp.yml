@@ -11,8 +11,7 @@ services:
       - ./html:/usr/share/nginx/html
       - ./ssl/private.key:/etc/nginx/ssl/private.key
       - ./ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt
-    ports:
-      - "443:443"
+    ports: ["443:443", "444:444"]
     depends_on:
       - wad-upload-api
     entrypoint: |
