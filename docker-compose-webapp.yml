@@ -30,7 +30,7 @@ services:
         aliases: ["wads.zerofuchs.net", "master"]
 
   wad-upload-api:
-    image: ubuntu:latest
+    image: odamex_python:latest
     volumes:
       - ./iwads:/iwads
       - ./pwads:/pwads
@@ -41,11 +41,6 @@ services:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
-    entrypoint: |
-      sh -c '
-      pip install -r requirements.txt
-      python ApiUpload.py
-      '
     deploy:
       resources:
         limits:

@@ -26,7 +26,7 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-
+docker build -t odamex_python:latest -f Dockerfile.Python .
 docker build -t odamex:latest -f Dockerfile .
 docker build -t odamex_managed:latest -f Dockerfile.Nodamex.Managed .
 

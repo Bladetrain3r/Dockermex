@@ -1,0 +1,7 @@
+FROM ubuntu:latest
+ENV DEBIAN_FRONTEND=noninteractive
+ENV FLASK_ENV=development
+COPY ./Python /app
+RUN apt update && apt install -y python3 python3-pip
+RUN pip install --break-system-packages -r /app/requirements.txt
+ENTRYPOINT [ "python3", "/app/ApiUpload.py" ]
