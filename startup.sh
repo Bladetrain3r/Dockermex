@@ -14,6 +14,7 @@ WWWREGION=${wwwregion:-"africa"}
 # Region specific changes
 cp ./ssl/${WWWREGION}.private.key ./ssl/private.key
 cp ./ssl/${WWWREGION}.fullchain.crt ./ssl/fullchain.crt
+
 sed -i "s/Hells Keep/Hells Keep - ${WWWREGION}/g" ./configs/*
 sed -i "s/localhost:8080/wads.zerofuchs.net:444\/iwads wads.zerofuchs.net:444\/pwads/g" ./configs/*
 
