@@ -30,7 +30,7 @@ services:
         aliases: ["wads.zerofuchs.net", "master"]
 
   wad-upload-api:
-    image: wad-upload:latest
+    image: ubuntu:latest
     volumes:
       - ./iwads:/iwads
       - ./pwads:/pwads
