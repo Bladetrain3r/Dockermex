@@ -29,7 +29,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 docker build -t odamex_python:latest -f Dockerfile.Python .
 docker build -t odamex:latest -f Dockerfile .
-docker build -t odamex_managed:latest -f Dockerfile.Nodamex.Managed .d
+docker build -t odamex_managed:latest -f Dockerfile.Nodamex.Managed .
 
 # docker compose -f docker-compose-tiny.yml up -d
 # docker compose -f docker-compose-tiny.yml down
