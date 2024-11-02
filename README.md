@@ -92,15 +92,14 @@ The `runserver.sh` script sets up the server environment, copies necessary files
 
 ## Docker Compose Files
 
-This repository includes Docker Compose files to simplify the deployment of multiple Odamex server instances.
+This repository includes Docker Compose files to simplify the deployment of persistent services.
 
 ### docker-compose.yml
 
 The `docker-compose.yml` file defines three services:
 
-- **odamex_server**: Runs an Odamex server with the default IWAD `freedoom1.wad` and configuration file `singleplayer.cfg`. It maps UDP port 10666 from the container to the host.
-- **odamex_server2**: Runs a second Odamex server with the default IWAD `freedoom2.wad` and configuration file `singleplayer.cfg`. It maps UDP port 10566 from the container to the host.
-- **odamex_serverdm**: Runs an Odamex server for deathmatch with no specific IWAD or configuration file. It maps UDP port 10567 from the container to the host.
+- **docker-compose-webapp** composes the core web frontend to test file upload and configuration management.
+- **docker-compose-tiny** composes the webapp and a pair of servers for a sort of default setup.
 
 Each service mounts the `iwads`, `pwads`, and `configs` directories from the host to the container, allowing for easy customization and configuration.
 
@@ -110,15 +109,9 @@ To start the services defined in `docker-compose.yml`, run:
 docker-compose up -d
 ```
 
-### docker-compose-dm-spread.yml
+## The Webapp
 
-The `docker-compose-dm-spread.yml` file is designed for running multiple deathmatch servers with different configurations. Each service can be customized with specific IWADs, PWADs, and configuration files.
-
-To start the services defined in `docker-compose-dm-spread.yml`, run:
-
-```sh
-docker-compose -f docker-compose-dm-spread.yml up -d
-```
+The webapp consists of an nginx host serving a static page(s) as a frontend, with a Python Flask (gunicorn) API handling file operations, authentication and server monitoring.
 
 ### Customization
 
