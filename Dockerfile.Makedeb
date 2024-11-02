@@ -1,0 +1,13 @@
+# Copy contents into folder, tarball it, make it into a deb with FPM, then copy it to the host
+
+FROM ubuntu:latest AS makedeb
+COPY . /app
+WORKDIR /app
+RUN tar -czf /app.tar.gz .
+RUN apt-get update && apt-get install -y ruby ruby-dev rubygems build-essential
+RUN gem install fpm
+RUN fpm -s tar -t deb -n myapp -v 1.0.0 /app.tar.gz
+CMD cp *.deb /host
+
+# Run docker build with mount to target folder
+# docker build -t makedeb -f Dockerfile.Makedeb . && docker run -v ./package:/host makedeb

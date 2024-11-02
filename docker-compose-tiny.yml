@@ -73,7 +73,7 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wad-server", "master"]
+        aliases: ["wads.zerofuchs.net", "master"]
     restart: unless-stopped
 
   wad-upload-api:
