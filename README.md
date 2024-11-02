@@ -12,21 +12,41 @@ To run Docker on a server, see here (and don't forget to install docker-compose)
 
 ## Repository Structure
 
-- Dockerfile
-- runserver.sh
-- README
-- configs
-- - default.conf
-- - doom2.conf
-- - doom2dm.conf
-- iwads/
-- - doom.wad
-- - DOOM2.WAD
-- - freedoom1.wad
-- - freedoom2.wad
-- - odamex.wad
-- pwads/
-- - example.wad
+- `.gitignore`
+- `africa.sh`
+- `brazil.sh`
+- `CONCEPT.md`
+- `configs/`
+- - `coop-doom.cfg`
+- - ...
+- `CREDITS/`
+- - ...
+- `docker-compose-files`
+- `Dockerfiles`
+- `Dockerfiles/`
+- `GOALS.md`
+- `html/`
+- - `index.html`
+- - `styles.css`
+- `Instructions.md`
+- `iwads/`
+- - `commercial/`
+- - `freeware/`
+- `LICENSES/`
+- `nginx_vol/`
+- - `nginx.conf`
+- `pwads/`
+- `Python/`
+- - `Api_Upload.py`
+- - `requirements.txt`
+- `README.md`
+- `runserver.sh`
+- `Server_Manager.py`
+- `service-configs/`
+- - `coop_freedoom2_SCYTHE.json`
+- - ...
+- `ssl/`
+- `tests/`
 
 runserver.sh
 
