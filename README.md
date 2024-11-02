@@ -37,7 +37,7 @@ To run Docker on a server, see here (and don't forget to install docker-compose)
 - - `nginx.conf`
 - `pwads/`
 - `Python/`
-- - `Api_Upload.py`
+- - `ApiUpload.py`
 - - `requirements.txt`
 - `README.md`
 - `runserver.sh`

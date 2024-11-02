@@ -42,7 +42,7 @@ services:
     entrypoint: |
       sh -c '
       pip install -r requirements.txt
-      python Api_Upload.py
+      python ApiUpload.py
       '
     deploy:
       resources:
