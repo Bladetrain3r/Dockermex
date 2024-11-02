@@ -3,6 +3,12 @@ from flask_cors import CORS
 import json
 import os
 import hashlib
+from ApiUtils import (
+    rate_limit, 
+    validate_file_type, 
+    log_access,
+    require_json
+)
 
 app = Flask(__name__)
 CORS(app)
@@ -14,17 +20,15 @@ app.config['SERVICE_CONFIG_FOLDER'] = '/service-configs'
 app.config['CONFIG_FOLDER'] = '/configs'
 
 @app.route('/submit-wad', methods=['POST'])
+@rate_limit(requests_per_window=10, window_seconds=60)
+@validate_file_type('.wad')
+@log_access()
 def upload_file():
-    if 'wadfile' not in request.files:
+    """Upload a WAD file"""
+    if 'file' not in request.files:
         return 'No file part', 400
 
-    file = request.files['wadfile']
-    if file.filename == '':
-        return 'No selected file', 400
-
-    if not file.filename.lower().endswith('.wad'):
-        return 'Only .wad files are allowed', 400
-
+    file = request.files['file']
     filename = file.filename.strip()  # Remove any whitespace
     folder = app.config['IWAD_FOLDER'] if 'iwad' in request.form and request.form['iwad'].lower() == 'true' else app.config['UPLOAD_FOLDER']
 
@@ -66,28 +70,37 @@ def upload_file():
     }), 200
 
 @app.route('/list-configs', methods=['GET'])
+@rate_limit(requests_per_window=30, window_seconds=60)
+@log_access()
 def list_configs():
     configs = [f for f in os.listdir(app.config['CONFIG_FOLDER']) if f.lower().endswith('.cfg')]
     return jsonify(configs)
 
 @app.route('/list-pwads', methods=['GET'])
+@rate_limit(requests_per_window=30, window_seconds=60)
+@log_access()
 def list_pwads():
     wads = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.lower().endswith('.wad')]
     wads.insert(0, '')  # Add an empty field as the first choice
     return jsonify(wads)
 
 @app.route('/list-iwads', methods=['GET'])
+@rate_limit(requests_per_window=30, window_seconds=60)
+@log_access()
 def list_iwads():
     wads = [f for f in os.listdir(app.config['IWAD_FOLDER']) if f.lower().endswith('.wad')]
     return jsonify(wads)
 
 @app.route('/submit-config', methods=['POST'])
+@rate_limit(requests_per_window=20, window_seconds=60)
+@require_json()
+@log_access()
 def submit_config():
     config_data = request.json
     config_name = (
         f"{config_data.get('configFile').split('.')[0]}_"
-        f"{config_data.get('iwadFile').split('.')[0]}_"
-        f"{config_data.get('pwadFile').split('.')[0]}.json"
+        f"{config_data.get('ifile').split('.')[0]}_"
+        f"{config_data.get('pfile').split('.')[0]}.json"
     )
     config_path = os.path.join(app.config['SERVICE_CONFIG_FOLDER'], config_name)
     with open(config_path, 'w', encoding='utf-8') as f:
