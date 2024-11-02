@@ -2,7 +2,7 @@ services:
   odamex_tiny:
     build:
       context: .
-    image: odamex:tiny
+    image: odamex:latest
     container_name: odamex_tiny
     environment:
       - IWAD=freedoom1.wad           # Specify the default IWAD here
@@ -26,7 +26,7 @@ services:
   odamex_tiny2:
     build:
       context: .
-    image: odamex:tiny
+    image: odamex:latest
     container_name: odamex_tiny2
     environment:
       - IWAD=freedoom2.wad           # Specify the default IWAD here
@@ -76,7 +76,6 @@ services:
     networks:
       wad-net:
         aliases: ["wads.zerofuchs.net", "master"]
-    restart: unless-stopped
 
   wad-upload-api:
     image: odamex_python:latest
@@ -90,11 +89,6 @@ services:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
-    entrypoint: |
-      sh -c '
-      python3 -m pip install --break-system-packages flask hashlib requests
-      python3 /app/ApiUpload.py
-      '
     deploy:
       resources:
         limits:

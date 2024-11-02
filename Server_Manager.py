@@ -129,16 +129,14 @@ def docker_teardown(expiries=False):
                     os.remove(f"./service-configs/{item}.expired")
                 os.rename(f"./service-configs/{item}", f"./service-configs/{item}.expired")
 
-
-
 if __name__ == "__main__":
-    print("Test Run")
-    docker_spinup()
-    print("Sleeping for 60 seconds")
-    try:
-        sleep(600)
-        docker_teardown()
-        print("Test Complete")
-    except KeyboardInterrupt:
-        docker_teardown()
-        print("Test Complete")
+    while True:
+        try:
+            print("Spinning Up Containers")
+            docker_spinup()
+            print("Sleeping for 24 hours")
+            sleep(86400)
+            docker_teardown()
+        except KeyboardInterrupt:
+            docker_teardown()
+            print("Test Complete")
