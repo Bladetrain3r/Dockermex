@@ -1,5 +1,5 @@
 FROM ubuntu:latest as python
-COPY ./Python/requirements.txt /requirements
+COPY ./Python/requirements.txt /requirements.txt
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install -y python3 python3-pip
 RUN pip install --break-system-packages -r /requirements.txt
