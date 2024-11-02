@@ -99,8 +99,8 @@ def submit_config():
     config_data = request.json
     config_name = (
         f"{config_data.get('configFile').split('.')[0]}_"
-        f"{config_data.get('iwadfile').split('.')[0]}_"
-        f"{config_data.get('pwadfile').split('.')[0]}.json"
+        f"{config_data.get('iwadFile').split('.')[0]}_"
+        f"{config_data.get('pwadFile').split('.')[0]}.json"
     )
     config_path = os.path.join(app.config['SERVICE_CONFIG_FOLDER'], config_name)
     with open(config_path, 'w', encoding='utf-8') as f:
