@@ -114,7 +114,8 @@ def log_access(logger: Optional[logging.Logger] = None):
         handler.setFormatter(logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         ))
-        logger.addHandler(handler)
+        if not logger.handlers:
+            logger.addHandler(handler)
 
     def decorator(f: Callable):
         @wraps(f)
