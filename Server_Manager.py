@@ -95,7 +95,7 @@ def stop_docker_service(config_name):
     strip_config = config_name.strip('.json')
 
     try:
-        container = client.containers.get(f"odamex_{strip_config}")    
+        container = client.containers.get(f"odamex_{strip_config}")
     except NotFound:
         print(f"Container odamex_{strip_config} not found")
         return False

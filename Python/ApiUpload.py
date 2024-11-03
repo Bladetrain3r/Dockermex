@@ -1,11 +1,14 @@
-from flask import Flask, request, redirect, url_for, jsonify
-from flask_cors import CORS
+"""
+Core API for Odamex Manager
+"""
 import json
 import os
 import hashlib
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from ApiUtils import (
-    rate_limit, 
-    validate_file_type, 
+    rate_limit,
+    validate_file_type,
     log_access,
     require_json
 )
