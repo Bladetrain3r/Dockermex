@@ -95,10 +95,19 @@ def list_pwads():
 @rate_limit(requests_per_window=30, window_seconds=60)
 @log_access()
 def list_iwads():
-    wads = [f for f in os.listdir(app.config['IWAD_FOLDER']) if f.lower().endswith('.wad')]
-    commercial_wads = [f for f in os.listdir(app.config['COMMERCIAL_IWAD_FOLDER']) if f.lower().endswith('.wad')]
-    wads.extend(commercial_wads)
-    return jsonify(wads)
+    """List all IWAD and commercial IWAD files."""
+    wads = [
+        f for f in os.listdir(app.config['IWAD_FOLDER'])
+        if f.lower().endswith('.wad')
+        and not f.lower().startswith('odamex')
+    ]
+    commercial_wads = [
+        f for f in os.listdir(app.config['COMMERCIAL_IWAD_FOLDER'])
+        if f.lower().endswith('.wad')
+        and not f.lower().startswith('odamex')
+    ]
+
+    return jsonify(wads + commercial_wads)
 
 @app.route('/list-services', methods=['GET'])
 @rate_limit(requests_per_window=30, window_seconds=60)
