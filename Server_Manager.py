@@ -53,9 +53,11 @@ def create_docker_service(config_name):
     pwad_file = config.get("pwadFile")
     pwad_mount = os.path.abspath(f'./pwads/{pwad_file}') if pwad_file else None
     iwad_file = config.get("iwadFile")
-    iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}') if iwad_file else os.path.abspath('./iwads/freeware/freedoom2.wad')
+    iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}') if iwad_file else os.path.abspath(f'./iwads/freeware/{iwad_file}')
     if FileExistsError(iwad_mount):
         iwad_mount = os.path.abspath(f'./iwads/freeware/{iwad_file}')
+    if FileNotFoundError(iwad_mount):
+        iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
 
     odamount = os.path.abspath('./iwads/odamex.wad')
 
