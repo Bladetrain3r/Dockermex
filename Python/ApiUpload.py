@@ -19,6 +19,8 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB
 app.config['SERVICE_CONFIG_FOLDER'] = '/service-configs'
 app.config['CONFIG_FOLDER'] = '/configs'
 
+# Upload Ops
+
 @app.route('/submit-wad', methods=['POST'])
 @rate_limit(requests_per_window=10, window_seconds=60)
 @validate_file_type('.wad')
@@ -69,6 +71,8 @@ def upload_file():
         'hash': calculated_hash
     }), 200
 
+# List Ops
+
 @app.route('/list-configs', methods=['GET'])
 @rate_limit(requests_per_window=30, window_seconds=60)
 @log_access()
@@ -89,9 +93,20 @@ def list_pwads():
 @log_access()
 def list_iwads():
     wads = [f for f in os.listdir(app.config['IWAD_FOLDER']) if f.lower().endswith('.wad')]
+    commercial_wads = [f for f in os.listdir(app.config['COMMERCIAL_IWAD_FOLDER']) if f.lower().endswith('.wad')]
+    wads.extend(commercial_wads)
     return jsonify(wads)
 
-@app.route('/submit-config', methods=['POST'])
+@app.route('/list-services', methods=['GET'])
+@rate_limit(requests_per_window=30, window_seconds=60)
+@log_access()
+def list_services():
+    services = [f for f in os.listdir(app.config['SERVICE_CONFIG_FOLDER']) if f.lower().endswith('.json')]
+    return jsonify(services)
+
+# Generate Ops
+
+@app.route('/generate-config', methods=['POST'])
 @rate_limit(requests_per_window=20, window_seconds=60)
 @require_json()
 @log_access()
@@ -116,6 +131,7 @@ def submit_config():
         'pwads': pwads,
         'iwads': iwads
     }), 200
+
 
 
 if __name__ == '__main__':
