@@ -1,5 +1,10 @@
 #!/bin/bash
 sudo apt update
+
+# Install Python and Docker
+sudo apt install -y python3 python3-pip
+pip3 install docker
+
 # Install docker engine
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
 # Add Docker's official GPG key:

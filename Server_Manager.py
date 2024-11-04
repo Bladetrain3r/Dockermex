@@ -141,7 +141,7 @@ if __name__ == "__main__":
             docker_spinup()
             print("Sleeping for 24 hours")
             sleep(86400)
-            docker_teardown()
+            #docker_teardown()
         except KeyboardInterrupt:
             docker_teardown()
             print("Test Complete")
