@@ -1,0 +1,81 @@
+# Build stage with all development dependencies
+FROM ubuntu:latest AS builder-base
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    g++ make cmake libsdl1.2-compat-dev mercurial mercurial-evolve zlib1g-dev \
+    libbz2-dev libjpeg-dev libfluidsynth-dev libgtk2.0-dev timidity nasm \
+    libssl-dev tar libglew-dev libopus-dev wget dos2unix
+
+# Download and extract FMOD
+WORKDIR /app/fmod
+RUN wget https://zandronum.com/essentials/fmod/fmodapi44464linux.tar.gz && \
+    tar xf fmodapi44464linux.tar.gz && \
+    rm fmodapi44464linux.tar.gz
+
+# Clone Zandronum
+WORKDIR /app
+RUN hg clone https://foss.heptapod.net/zandronum/zandronum-stable && \
+    cd zandronum-stable && \
+    hg update ZA_3.1  # Latest stable version
+
+# Build server-only stage
+FROM builder-base AS server-build
+WORKDIR /app/zandronum-stable
+RUN mkdir buildserver && \
+    cd buildserver && \
+    cmake \
+    -DSERVERONLY=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DFMOD_LIBRARY=/app/fmod/fmodapi44464linux/api/lib/libfmodex64-4.44.64.so \
+    -DFMOD_INCLUDE_DIR=/app/fmod/fmodapi44464linux/api/inc \
+    .. && \
+    make -j$(nproc)
+
+# Runtime stage
+FROM ubuntu:latest AS server
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libsdl1.2-compat \
+    libssl3 \
+    libglew2.2 \
+    libopus0 \
+    wget \
+    dos2unix && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m zandronum && \
+    chown -R zandronum:zandronum /app
+
+# Set up directories
+RUN mkdir -p /app/config /app/iwads /app/pwads /app/server
+COPY --chown=zandronum configs /app/config
+# COPY --chown=zandronum iwads /app/iwads
+COPY --chown=zandronum iwads/freeware /home/zandronum/.config/zandronum
+COPY --chown=zandronum iwads/commercial /home/zandronum/.config/zandronum
+COPY --chown=zandronum pwads /app/pwads
+COPY --chown=zandronum runserverz.sh /app/runserver.sh
+
+# Copy FMOD library and Zandronum server
+COPY --from=builder-base /app/fmod/fmodapi44464linux/api/lib/libfmodex64-4.44.64.so /usr/lib/
+COPY --from=server-build --chown=zandronum /app/zandronum-stable/buildserver/zandronum.pk3 /app/server
+COPY --from=server-build --chown=zandronum /app/zandronum-stable/buildserver/zandronum-server /app/server/
+
+# Set up environment
+ENV ZANDROPORT=10666
+RUN dos2unix /app/runserver.sh && \
+    ldconfig
+
+# Switch to non-root user
+USER zandronum
+
+# Expose port
+EXPOSE ${ZANDROPORT}/udp
+
+# Run server
+ENTRYPOINT [ "/usr/bin/tail", "-f", "/dev/null" ]
+# ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]
