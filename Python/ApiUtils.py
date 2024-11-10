@@ -100,16 +100,17 @@ def validate_file_type(*allowed_extensions: str):
         return wrapped
     return decorator
 
-def log_access(logger: Optional[logging.Logger] = None):
+def log_access(logger: Optional[logging.Logger] = None, debug: bool = False):
     """
-    Access logging decorator
+    Access logging decorator with optional debug mode
 
     Args:
         logger: Optional logger instance, creates new one if not provided
+        debug: Enable debug logging for this endpoint
     """
     if logger is None:
         logger = logging.getLogger('api_access')
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.DEBUG if debug else logging.INFO)
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -121,14 +122,27 @@ def log_access(logger: Optional[logging.Logger] = None):
         @wraps(f)
         def wrapped(*args, **kwargs):
             start_time = time.time()
+            
+            # Debug logging for auth endpoints
+            if debug and 'auth' in request.path:
+                logger.debug("Request data: %s", request.get_json())
+                if hasattr(request, 'users'):
+                    logger.debug("Available users: %s", request.users)
+            
             result = f(*args, **kwargs)
             duration = time.time() - start_time
 
+            # Standard access logging
             logger.info(
                 'Access: %s %s - Client: %s - Duration: %.2fs - Status: %s',
                 request.method, request.path, request.remote_addr, duration,
                 result[1] if isinstance(result, tuple) else 200
             )
+            
+            # Debug logging for response
+            if debug:
+                logger.debug("Response: %s", result)
+
             return result
         return wrapped
     return decorator

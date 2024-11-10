@@ -49,3 +49,64 @@ h1, h2 {
 .error {
     color: red;
 }
+
+/* Add to your existing styles.css */
+.login-container {
+    background: darkolivegreen;
+    opacity: 0.9;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 100px auto;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header {
+    background: darkolivegreen;
+    opacity: 0.9;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    color: white;
+}
+
+.logout-button {
+    background: #d9534f;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #c9302c;
+}
+
+#loginError {
+    color: #d9534f;
+    background: rgba(217, 83, 79, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}

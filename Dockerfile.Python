@@ -7,4 +7,5 @@ RUN pip install --break-system-packages -r /requirements.txt
 FROM python AS app
 ENV FLASK_ENV=development
 COPY ./Python /app
-ENTRYPOINT [ "python3", "/app/ApiUpload.py" ]
+WORKDIR /app
+ENTRYPOINT [ "python3", "/app/ApiCore.py" ]
