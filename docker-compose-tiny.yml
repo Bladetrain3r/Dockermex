@@ -26,7 +26,7 @@ services:
   odamex_tiny2:
     build:
       context: .
-    image: odamex:latest
+    image: odamexdocker:alpine
     container_name: odamex_tiny2
     environment:
       - IWAD=DOOM2.WAD         # Specify the default IWAD here
@@ -53,7 +53,7 @@ services:
     environment:
       - htpassword=replaceme
     volumes:
-      - ./iwads/freeware:/iwads:ro
+      - ./iwads:/iwads:ro
       - ./pwads:/pwads:ro
       - ./nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./html:/usr/share/nginx/html:ro
@@ -80,11 +80,11 @@ services:
   wad-upload-api:
     image: odamex_python:latest
     volumes:
-      - ./iwads:/iwads
+      - ./iwads:/iwads:ro
       - ./pwads:/pwads
-      - ./Python:/app
+      - ./Python:/app:ro
       - ./service-configs:/service-configs
-      - ./configs:/configs
+      - ./configs:/configs:ro
     ports:
       - "5000:5000"
     environment:
