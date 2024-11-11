@@ -4,11 +4,14 @@ This repository contains the Docker setup for running an Odamex server. The setu
 
 ## Prerequisites
 
+- Docker
+- Docker Compose
+- Python 3.x
+
 ### Installing Docker
 
-Find instructions for Docker Desktop to run locally here: https://docs.docker.com/desktop/
-To run Docker on a server, see here (and don't forget to install docker-compose): https://docs.docker.com/engine/install/ubuntu/
-
+Find instructions for Docker Desktop to run locally here: [Docker Desktop](https://docs.docker.com/desktop/)
+To run Docker on a server, see here (and don't forget to install docker-compose): [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 
 ## Repository Structure
 
@@ -17,38 +20,50 @@ To run Docker on a server, see here (and don't forget to install docker-compose)
 - `brazil.sh`
 - `CONCEPT.md`
 - `configs/`
-- - `coop-doom.cfg`
-- - ...
+  - `coop-doom.cfg`
+  - ...
 - `CREDITS/`
-- - ...
-- `docker-compose-files`
-- `Dockerfiles`
+  - ...
+- `docker-compose-production.yml`
+- `docker-compose-tiny.yml`
+- `docker-compose-webapp.yml`
+- `docker-compose.yml.template`
+- `Dockerfile`
+- `Dockerfile.Alpine`
+- `Dockerfile.Freedoom`
+- `Dockerfile.Makedeb`
+- `Dockerfile.Nodamex`
+- `Dockerfile.Nodamex.Managed`
+- `Dockerfile.Python`
+- `Dockerfile.TinyOdamex`
 - `Dockerfiles/`
 - `GOALS.md`
 - `html/`
-- - `index.html`
-- - `styles.css`
+  - `index.html`
+  - `styles.css`
 - `Instructions.md`
 - `iwads/`
-- - `commercial/`
-- - `freeware/`
+  - `commercial/`
+  - `freeware/`
 - `LICENSES/`
+- `Make_Deb.sh`
+- `megawad.md`
 - `nginx_vol/`
-- - `nginx.conf`
+  - `nginx.conf`
+- `package/`
+- `proxy.py`
 - `pwads/`
 - `Python/`
-- - `ApiUpload.py`
-- - `requirements.txt`
+  - `ApiUpload.py`
+  - `requirements.txt`
 - `README.md`
 - `runserver.sh`
 - `Server_Manager.py`
 - `service-configs/`
-- - `coop_freedoom2_SCYTHE.json`
-- - ...
+  - `coop_freedoom2_SCYTHE.json`
+  - ...
 - `ssl/`
 - `tests/`
-
-runserver.sh
 
 ## Dockerfile
 
@@ -60,7 +75,11 @@ The build stage clones the Odamex repository, installs necessary dependencies, a
 
 ### FreeDoom Build
 
-This stage only applies to Dockerfile.Freedoom, and will download from source and compile a copy of Freedoom.
+This stage only applies to `Dockerfile.Freedoom`, and will download from source and compile a copy of Freedoom.
+
+### Nodamex Build
+
+Build only odasrv without Freedoom OR compiling the Odamex wad separately.
 
 ### Runtime Stage
 
@@ -77,17 +96,12 @@ The `runserver.sh` script sets up the server environment, copies necessary files
    ```sh
    docker build -t odamex-server -f Dockerfile .
    ```
-
-   ```sh
-   # Freedoom. Copy WAD out of final container as it will not match the hashsums of pre-existing binaries.
-   docker build -t odamex-server -f Dockerfile.Freedoom .
-   ```
    
 
-2. **Run the Docker Container, set CONFIGFILE environment to change config:**
+2. **Run the Docker Container, set CONFIGFILE environment to change config and IWAD to change wad:**
 
    ```sh
-   docker run -d -e CONFIGFILE="doom2.conf" -p 10666:10666/udp --name odamex-server odamex-server
+   docker run -d -e CONFIGFILE="doom2.conf" -e IWAD="DOOM2.WAD" -p 10666:10666/udp --name odamex-server odamex-server
    ```
 
 ## Docker Compose Files
@@ -106,12 +120,19 @@ Each service mounts the `iwads`, `pwads`, and `configs` directories from the hos
 To start the services defined in `docker-compose.yml`, run:
 
 ```sh
-docker-compose up -d
+docker compose -f docker-compose-tiny.yml up
 ```
 
 ## The Webapp
 
 The webapp consists of an nginx host serving a static page(s) as a frontend, with a Python Flask (gunicorn) API handling file operations, authentication and server monitoring.
+
+- Dockerfile.Python builds a container image, although modifications to the Python code won't need a rebuild as Docker Compose mounts the Python folder into /app
+
+### Nginx
+
+The Nginx container handles both serving the static frontpage, and acts as a reverse proxy to the Python API.
+Note that authentication and session management will not work if nginx.conf isn't in place with all the header rules and preflight configuration.
 
 ### Customization
 
@@ -149,11 +170,13 @@ It's mostly something for interest or if you want to run a server EXTRA privatel
 
 This project is licensed under the  Unlicense. Use the contents of this repository at your own risk. 
 
+Docker is licensed under the [Apache license](https://github.com/docker/docs/blob/main/LICENSE)
 Odamex is licensed under the [GNU GPL2 public license](https://github.com/odamex/odamex/blob/stable/LICENSE) 
 Freedoom is licensed under [this license](https://github.com/freedoom/freedoom/blob/master/COPYING.adoc)
 Deutex is licensed under a [GPL2 license with additional third party licenses](https://github.com/Doom-Utils/deutex/blob/master/LICENSE)
 
 # Credits:
+## [Docker](https://docs.docker.com/get-started/get-docker/)
 ## [Odamex](https://github.com/odamex/odamex/blob/stable/MAINTAINERS)
 ## [FreeDoom](https://github.com/freedoom/freedoom/blob/master/CREDITS)
 ## [Deutex](https://github.com/Doom-Utils/deutex/blob/master/AUTHORS)
