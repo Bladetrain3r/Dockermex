@@ -1,0 +1,37 @@
+# Odamex Build Stage
+
+FROM alpine:latest AS builder-base
+WORKDIR /app
+RUN apk update && apk add --no-cache g++ cmake git fltk-dev sdl2-dev sdl2_mixer-dev curl-dev libpng-dev jsoncpp-dev zlib-dev portmidi-dev protobuf-dev make
+RUN git clone https://github.com/odamex/odamex.git --recurse-submodules
+
+FROM builder-base AS srv
+WORKDIR /app/odamex/build
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv
+
+FROM builder-base AS wad
+RUN apk update && apk add --no-cache git make gcc autoconf autoconf-archive automake pkgconfig
+RUN git clone https://github.com/Doom-Utils/deutex
+WORKDIR /app/deutex
+RUN ./bootstrap && ./configure && make && make install
+ENV DEUTEX=/usr/local/bin/deutex
+WORKDIR /app/odamex/build
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
+
+# Runtime Stage
+
+FROM alpine:latest AS server
+ENV ODAPORT=10666
+WORKDIR /app 
+RUN adduser -D -h /app odamex && chown -R odamex:odamex /app
+RUN apk update && apk add --no-cache dos2unix bash
+COPY --chown=odamex configs /app/config
+COPY --chown=odamex iwads /app/iwads
+COPY --chown=odamex pwads /app/pwads
+COPY --chown=odamex runserver.sh /app
+COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
+COPY --from=wad --chown=odamex /app/odamex/build/wad/odamex.wad /app/iwads
+RUN dos2unix /app/runserver.sh
+USER odamex
+ENTRYPOINT ["/bin/bash", "/app/runserver.sh"]
+EXPOSE ${ODAPORT}/udp
