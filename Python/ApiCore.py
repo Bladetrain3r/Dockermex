@@ -28,7 +28,7 @@ class CoreApi:
         self.app.config['UPLOAD_FOLDER'] = '/pwads'
         self.app.config['IWAD_FOLDER'] = '/iwads/freeware'
         self.app.config['COMMERCIAL_IWAD_FOLDER'] = '/iwads/commercial'
-        self.app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
+        self.app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 2048
         self.app.config['SERVICE_CONFIG_FOLDER'] = '/service-configs'
         self.app.config['CONFIG_FOLDER'] = '/configs'
         

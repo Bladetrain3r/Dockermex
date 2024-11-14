@@ -20,3 +20,4 @@ html/bg4.jpg
 megawad.md
 */__pycache__/*
 *users.json
+sqlite/users.db

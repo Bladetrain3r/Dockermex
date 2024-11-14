@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAD Manager Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <div class="user-info">
+            Welcome, <span id="username"></span>
+            <button onclick="logout()" class="logout-button">Logout</button>
+        </div>
+        <nav class="admin-nav">
+            <a href="/main.html">Main Page</a>
+            <a href="/admin/users.html" class="active">User Management</a>
+        </nav>
+    </div>
+
+    <div class="admin-container">
+        <h1>User Management</h1>
+        
+        <!-- Create User Form -->
+        <div class="admin-section">
+            <h2>Create User</h2>
+            <form id="createUserForm" class="admin-form">
+                <div class="form-group">
+                    <label for="newUsername">Username:</label>
+                    <input type="text" id="newUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Password:</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newRole">Role:</label>
+                    <select id="newRole" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-button">Create User</button>
+            </form>
+        </div>
+
+        <!-- User List -->
+        <div class="admin-section">
+            <h2>Users</h2>
+            <table id="userTable" class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Last Login</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit User</h2>
+            <form id="editUserForm" class="admin-form">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editUsername">Username:</label>
+                    <input type="text" id="editUsername">
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">New Password:</label>
+                    <input type="password" id="editPassword" placeholder="Leave blank to keep current">
+                </div>
+                <div class="form-group">
+                    <label for="editRole">Role:</label>
+                    <select id="editRole">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editActive">Status:</label>
+                    <select id="editActive">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="submit-button">Save Changes</button>
+                    <button type="button" onclick="closeModal()" class="cancel-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check admin privileges
+        async function checkAdmin() {
+            try {
+                const response = await fetch('/auth/session', {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                const data = await response.json();
+                if (data.user.role !== 'admin') {
+                    window.location.href = '/main.html';
+                    return;
+                }
+                document.getElementById('username').textContent = data.user.username;
+            } catch (error) {
+                console.error('Session check error:', error);
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Load user list
+        async function loadUsers() {
+            try {
+                const response = await fetch('/admin/users', {
+                    credentials: 'include'
+                });
+                if (!response.ok) throw new Error('Failed to load users');
+                
+                const data = await response.json();
+                const tbody = document.querySelector('#userTable tbody');
+                tbody.innerHTML = '';
+                
+                data.users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.role}</td>
+                        <td>${user.last_login || 'Never'}</td>
+                        <td>${user.active ? 'Active' : 'Inactive'}</td>
+                        <td>
+                            <button onclick="editUser(${user.id})" class="action-button">Edit</button>
+                            <button onclick="deleteUser(${user.id})" class="action-button delete">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // Create user
+        document.getElementById('createUserForm').onsubmit = async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/admin/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        username: document.getElementById('newUsername').value,
+                        password: document.getElementById('newPassword').value,
+                        role: document.getElementById('newRole').value
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to create user');
+                
+                alert('User created successfully');
+                e.target.reset();
+                loadUsers();
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('Failed to create user');
+            }
+        };
+
+        // Edit user functions
+        function editUser(userId) {
+            // Populate modal with user data
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUserModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        document.getElementById('editUserForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('editUserId').value;
+            const data = {
+                username: document.getElementById('editUsername').value,
+                role: document.getElementById('editRole').value,
+                active: document.getElementById('editActive').value === '1'
+            };
+            
+            const password = document.getElementById('editPassword').value;
+            if (password) data.password = password;
+            
+            try {
+                const response = await fetch(`/admin/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) throw new Error('Failed to update user');
+                
+                alert('User updated successfully');
+                closeModal();
+                loadUsers();
+            } catch (error) {
+                console.error('Error updating user:', error);
+                alert('Failed to update user');
+            }
+        };
+
+        // Delete user
+        async function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user?')) return;
+            
+            try {
+                const response = await fetch(`/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) throw new Error('Failed to delete user');
+                
+                alert('User deleted successfully');
+                loadUsers();
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Failed to delete user');
+            }
+        }
+
+        // Initialize
+        window.onload = () => {
+            checkAdmin();
+            loadUsers();
+        };
+    </script>
+</body>
+</html>

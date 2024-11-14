@@ -37,6 +37,7 @@ services:
       - ./Python:/app:ro
       - ./service-configs:/service-configs
       - ./configs:/configs:ro
+      - ./sqlite:/sqlite
     ports:
       - "5000:5000"
     environment:
