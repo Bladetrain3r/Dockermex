@@ -111,7 +111,7 @@ def stop_docker_service(config_name):
 def docker_spinup():
     """Spin up all the containers in the service-configs directory."""
     for item in os.listdir('./service-configs'):
-        if item.endswith('.json'):
+        if item.endswith('.json') and not item.endswith('.expired') and not item.startswith('users'):
             # Check if the container is already running
             client = docker.from_env()
             strip_config = item.strip('.json')
