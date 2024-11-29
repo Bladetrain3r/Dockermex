@@ -53,9 +53,14 @@ def create_docker_service(config_name):
     pwad_file = config.get("pwadFile")
     pwad_mount = os.path.abspath(f'./pwads/{pwad_file}') if pwad_file else None
     iwad_file = config.get("iwadFile")
-    iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}') if iwad_file else os.path.abspath('./iwads/freeware/freedoom2.wad')
-    if FileExistsError(iwad_mount):
-        iwad_mount = os.path.abspath(f'./iwads/freeware/{iwad_file}')
+    if iwad_file:
+        iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}')
+        if not os.path.exists(iwad_mount):
+            iwad_mount = os.path.abspath(f'./iwads/freeware/{iwad_file}')
+            if not os.path.exists(iwad_mount):
+                iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
+    else:
+        iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
 
     odamount = os.path.abspath('./iwads/odamex.wad')
 
@@ -93,7 +98,7 @@ def stop_docker_service(config_name):
     strip_config = config_name.strip('.json')
 
     try:
-        container = client.containers.get(f"odamex_{strip_config}")    
+        container = client.containers.get(f"odamex_{strip_config}")
     except NotFound:
         print(f"Container odamex_{strip_config} not found")
         return False
@@ -106,7 +111,7 @@ def stop_docker_service(config_name):
 def docker_spinup():
     """Spin up all the containers in the service-configs directory."""
     for item in os.listdir('./service-configs'):
-        if item.endswith('.json'):
+        if item.endswith('.json') and not item.endswith('.expired') and not item.startswith('users'):
             # Check if the container is already running
             client = docker.from_env()
             strip_config = item.strip('.json')
@@ -129,16 +134,15 @@ def docker_teardown(expiries=False):
                     os.remove(f"./service-configs/{item}.expired")
                 os.rename(f"./service-configs/{item}", f"./service-configs/{item}.expired")
 
-
-
 if __name__ == "__main__":
-    print("Test Run")
-    docker_spinup()
-    print("Sleeping for 60 seconds")
-    try:
-        sleep(600)
-        docker_teardown()
-        print("Test Complete")
-    except KeyboardInterrupt:
-        docker_teardown()
-        print("Test Complete")
+    while True:
+        try:
+            print("Spinning Up Containers")
+            docker_spinup()
+            print("Sleeping for 24 hours")
+            sleep(86400)
+            #docker_teardown()
+        except KeyboardInterrupt:
+            docker_teardown()
+            print("Test Complete")
+            break

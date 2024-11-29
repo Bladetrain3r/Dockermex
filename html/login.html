@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAD Manager Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>WAD Manager Login</h1>
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="error" id="loginError" style="display: none;"></div>
+            <button type="submit" class="submit-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('/auth/login', {  // Make sure this matches nginx location
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/main.html';
+                } else {
+                    const data = await response.json();
+                    const errorDiv = document.getElementById('loginError');
+                    errorDiv.textContent = data.error || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = 'Network error occurred';
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        // Check if already logged in
+        async function checkSession() {
+            try {
+                const response = await fetch('/auth/session', {
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    window.location.href = '/main.html';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        window.onload = checkSession;
+    </script>
+</body>
+</html>

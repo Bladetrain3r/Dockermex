@@ -5,12 +5,14 @@ services:
     environment:
       - htpassword=replaceme
     volumes:
-      - ./iwads/freeware:/iwads
-      - ./pwads:/pwads
-      - ./nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./html:/usr/share/nginx/html
-      - ./ssl/private.key:/etc/nginx/ssl/private.key
-      - ./ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt
+      - ./iwads:/iwads:ro
+      - ./pwads:/pwads:ro
+      - ./nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./html:/usr/share/nginx/html:ro
+      - ./ssl/private.key:/etc/nginx/ssl/private.key:ro
+      - ./ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt:ro
+      - ./ssl/wads.key:/etc/nginx/ssl/wads.key:ro
+      - ./ssl/wads.crt:/etc/nginx/ssl/wads.crt:ro
     ports: ["443:443", "444:444"]
     depends_on:
       - wad-upload-api
@@ -25,25 +27,21 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wad-server", "master"]
+        aliases: ["wads.zerofuchs.net", "master"]
 
   wad-upload-api:
-    image: wad-upload:latest
+    image: odamex_python:latest
     volumes:
-      - ./iwads:/iwads
+      - ./iwads:/iwads:ro
       - ./pwads:/pwads
-      - ./Python:/app
+      - ./Python:/app:ro
       - ./service-configs:/service-configs
-      - ./configs:/configs
+      - ./configs:/configs:ro
+      - ./sqlite:/sqlite
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
-    entrypoint: |
-      sh -c '
-      pip install -r requirements.txt
-      python Api_Upload.py
-      '
     deploy:
       resources:
         limits:
