@@ -1,4 +1,29 @@
 # ApiDatabase.py
+"""
+ApiDatabase.py
+
+This module provides a DatabaseManager class for managing a SQLite database 
+that stores user information and access tokens. It includes methods for 
+initializing the database, creating tables, and handling user authentication 
+and session management.
+
+Classes:
+    DatabaseManager: Manages the SQLite database, including user and access 
+    token tables.
+
+Usage:
+    db_manager = DatabaseManager('/path/to/database.db')
+    db_manager.some_method()
+
+Dependencies:
+    - sqlite3
+    - hashlib
+    - secrets
+    - typing
+    - logging
+    - datetime
+"""
+
 import sqlite3
 import hashlib
 import secrets

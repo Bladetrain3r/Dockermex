@@ -1,4 +1,8 @@
 # api_utils.py
+"""
+This file contains utility functions and decorators for rate limiting, file type validation, access logging, and requiring JSON content type.
+"""
+
 from functools import wraps
 import time
 from threading import Lock
