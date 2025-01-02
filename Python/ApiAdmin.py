@@ -1,8 +1,31 @@
 # ApiAdmin.py
+"""
+ApiAdmin.py
+
+This module provides the admin Blueprint for managing administrative tasks 
+using Flask. It includes routes for listing users and creating new users, 
+with appropriate authentication and rate limiting.
+
+Blueprints:
+    admin_bp: A Flask Blueprint for admin routes.
+
+Decorators:
+    require_admin: Ensures that the user has admin privileges.
+
+Routes:
+    /admin/users [GET]: List all users.
+    /admin/users [POST]: Create a new user.
+
+Dependencies:
+    - flask
+    - ApiDatabase (DatabaseManager)
+    - ApiUtils (rate_limit, log_access, require_json)
+    - functools
+"""
+from functools import wraps
 from flask import Blueprint, request, jsonify, session
 from ApiDatabase import DatabaseManager
 from ApiUtils import rate_limit, log_access, require_json
-from functools import wraps
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 db = DatabaseManager()

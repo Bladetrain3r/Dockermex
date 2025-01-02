@@ -1,4 +1,30 @@
 # CoreApi.py
+"""
+CoreApi.py
+
+This module provides a CoreApi class for managing the core API functionality 
+using Flask. It includes methods for initializing the Flask application, 
+configuring CORS, setting up basic and session configurations, and loading 
+users on startup.
+
+Classes:
+    CoreApi: Manages the Flask application and its configurations.
+
+Usage:
+    core_api = CoreApi()
+    core_api.app.run()
+
+Dependencies:
+    - flask
+    - flask_cors
+    - json
+    - os
+    - hashlib
+    - functools
+    - ApiUtils (rate_limit, validate_file_type, log_access, require_json)
+    - typing
+    - secrets
+"""
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import json
@@ -164,7 +190,7 @@ class CoreApi:
                 'hash': calculated_hash
             }), 200
 
-        # List routes
+        # List type routes
         @self.app.route('/list-configs', methods=['GET'])
         @self.require_auth
         @rate_limit(requests_per_window=30, window_seconds=60)

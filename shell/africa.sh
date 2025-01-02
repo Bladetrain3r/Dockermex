@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ..
 git reset --hard
 git pull
 chmod +x *.sh

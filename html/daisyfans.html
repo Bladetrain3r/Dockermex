@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daisy Fans are the Best!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-group">
+        <h1>Daisy Fans are the Best!</h1>
+        <p>Join the Daisy fan club today and get access to exclusive content, discounts, and more!</p>
+        <button class="submit-button">Join Now</button>
+    </div>
+    <p>Check out these photos of Daisy:</p>
+    <div class="daisy-photos">        
+        <script>
+            const imagefolder = "/daisyfans/";
+            for (let i = 1; i <= 10; i++) {
+                const img = document.createElement('img');
+                img.src = `${imagefolder}/${i}.jpg`;
+                img.alt = `Daisy ${i}`;
+                document.body.appendChild(img);
+                img.style.display = 'block';
+                img.style.margin = '5 auto';
+            }
+        </script>
+    </div>
+</body>

@@ -1,4 +1,23 @@
 # manage_users.py
+"""
+manage_users.py
+
+This script provides a command-line interface (CLI) for managing users in the 
+application. It includes commands for adding new users, listing all users, 
+and updating user information.
+
+Commands:
+    add_user: Add a new user with a username, password, and role.
+    list_users: List all users in the database.
+    update_user: Update user information such as username, password, role, 
+    and active status.
+
+Dependencies:
+    - click
+    - ApiDatabase (DatabaseManager)
+    - sys
+"""
+
 import click
 from ApiDatabase import DatabaseManager
 import sys
