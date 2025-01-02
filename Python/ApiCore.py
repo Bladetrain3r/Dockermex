@@ -190,7 +190,7 @@ class CoreApi:
                 'hash': calculated_hash
             }), 200
 
-        # List routes
+        # List type routes
         @self.app.route('/list-configs', methods=['GET'])
         @self.require_auth
         @rate_limit(requests_per_window=30, window_seconds=60)

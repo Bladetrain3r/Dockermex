@@ -233,3 +233,15 @@ h1, h2 {
 .cancel-button:hover {
     background: #555;
 }
+
+.daisy-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.daisy-photos {
+    display: flex;
+    gap: 20px;
+}

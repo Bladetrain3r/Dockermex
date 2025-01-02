@@ -20,7 +20,6 @@ docker-compose-webapp.yml
  file sets up the necessary Docker services for the application.
 
 ```yaml
-version: '3'
 services:
   nginx:
     image: nginx:latest
@@ -75,11 +74,7 @@ networks:
 - **nginx**
   - **Image**: Uses the latest Nginx image.
   - **Volumes**: Mounts necessary directories and files into the container.
-    - `./pwads:/pwads:ro`: Mounts the 
-
-pwads
-
- directory as read-only.
+    - `./pwads:/pwads:ro`: Mounts the pwads directory as read-only.
     - `./nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf:ro`: Mounts the Nginx configuration file.
     - Other volumes mount SSL certificates and HTML files.
   - **Ports**: Exposes ports `443` and `444` on the host.
