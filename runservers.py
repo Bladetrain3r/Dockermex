@@ -51,7 +51,8 @@ def create_docker_service(config_name):
     config_file = config.get("configFile")
     config_mount = os.path.abspath(f'./configs/{config_file}') if config_file else os.path.abspath('./configs/default.cfg')
     pwad_file = config.get("pwadFile")
-    pwad_mount = os.path.abspath(f'./pwads/{pwad_file}') if pwad_file else None
+    pwad_mount = os.path.abspath(f'./pwads/{pwad_file}') if pwad_file else os.path.abspath(f'./pwads/stub')
+    print(f"pwad_file: {pwad_file}, pwad_mount: {pwad_mount}")
     iwad_file = config.get("iwadFile")
     if iwad_file:
         iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}')
