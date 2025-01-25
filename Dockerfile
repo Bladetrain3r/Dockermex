@@ -3,15 +3,16 @@
 FROM ubuntu:latest AS builder-base
 WORKDIR /app
 RUN apt update && apt install -y g++ cmake git libfltk1.3-dev libsdl2-dev libsdl2-mixer-dev libcurl4-openssl-dev libpng-dev libjsoncpp-dev zlib1g-dev libportmidi-dev libprotobuf-dev
-RUN git clone https://github.com/odamex/odamex.git --recurse-submodules
+COPY ./odamex /app/odamex
 
 FROM builder-base AS srv
 WORKDIR /app/odamex/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv
 
 FROM builder-base AS wad
+COPY ./odamex /app/odamex
+COPY ./deutex /app/deutex
 RUN apt update && apt install -y git make gcc autoconf autoconf-archive automake pkg-config
-RUN git clone https://github.com/Doom-Utils/deutex
 WORKDIR /app/deutex
 RUN ./bootstrap && ./configure && make && make install
 ENV DEUTEX=/usr/local/bin/deutex
