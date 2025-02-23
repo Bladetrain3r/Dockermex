@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# Vars
+WWWREGION=${wwwregion:-"africa"}
+
+# Update and upgrade
+
 sudo apt update
 
 # Install Python and Docker
@@ -14,15 +20,6 @@ sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-WWWREGION=${wwwregion:-"africa"}
-
-# Region specific changes
-cp ./ssl/${WWWREGION}.private.key ./ssl/private.key
-cp ./ssl/${WWWREGION}.fullchain.crt ./ssl/fullchain.crt
-
-sed -i "s/Hells Keep/Hells Keep - ${WWWREGION}/g" ./configs/*
-sed -i "s/http:\/\/localhost:8080/https:\/\/wads.zerofuchs.net:444\/iwads https:\/\/wads.zerofuchs.net:444\/pwads/g" ./configs/*
-
 # Add the repository to Apt sources:
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
@@ -31,6 +28,13 @@ echo \
 sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Region specific changes
+cp ./ssl/${WWWREGION}.private.key ./ssl/private.key
+cp ./ssl/${WWWREGION}.fullchain.crt ./ssl/fullchain.crt
+
+sed -i "s/Hells Keep/Hells Keep - ${WWWREGION}/g" ./configs/*
+sed -i "s/http:\/\/localhost:8080/https:\/\/wads.zerofuchs.net:444\/iwads https:\/\/wads.zerofuchs.net:444\/pwads/g" ./configs/*
 
 docker build -t odamex_python:latest -f Dockerfile.Python .
 docker build -t odamex:latest -f Dockerfile .
