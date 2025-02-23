@@ -54,11 +54,17 @@ COPY nginxd/nginx.conf /tmp/nginx.conf
 RUN cat /tmp/nginx.conf > /etc/nginx/nginx.conf
 RUN echo "Hi Maw!"
 
+WORKDIR /etc/nginx/modsecurity
+RUN git clone https://github.com/coreruleset/coreruleset.git
+RUN cp coreruleset/crs-setup.conf.example coreruleset/crs-basic.conf
+
+# clean up source folders
+WORKDIR /
+RUN rm -rf /ModSecurity /ModSecurity-nginx /nginx-${NGINX_VERSION} /nginx-${NGINX_VERSION}.tar.gz
+
 # RUN apk add pcre-dev zlib-dev
 
 # Clean up build dependencies
 # RUN apk del gcc libc-dev make openssl-dev pcre-dev zlib-dev linux-headers \
 #    curl gnupg libxslt-dev geoip-dev g++ git libtool automake autoconf file
-
-WORKDIR /
 EXPOSE 443
