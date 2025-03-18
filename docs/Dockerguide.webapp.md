@@ -47,7 +47,7 @@ services:
       '
     networks:
       wad-net:
-        aliases: ["wads.zerofuchs.net", "master"]
+        aliases: ["wads.zerofuchs.local", "master"]
 
   wad-upload-api:
     image: odamex_python:latest

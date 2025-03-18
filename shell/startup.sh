@@ -1,7 +1,16 @@
 #!/bin/bash
 
 # Vars
-WWWREGION=${wwwregion:-"africa"}
+WWWREGION=${wwwregion:-"local"}
+WWWDOMAIN=${wwwdomain:-"mydoomhost"}
+
+if [ "africa" == "${WWWREGION}"]; then
+  domainsuffix = ".co.za"
+elif [ "local" == "${WWWREGION}"]; then
+  domainsuffix = ".local"
+else
+  domainsuffix = ".net"
+fi
 
 # Update and upgrade
 
@@ -34,7 +43,7 @@ cp ./ssl/${WWWREGION}.private.key ./ssl/private.key
 cp ./ssl/${WWWREGION}.fullchain.crt ./ssl/fullchain.crt
 
 sed -i "s/Hells Keep/Hells Keep - ${WWWREGION}/g" ./configs/*
-sed -i "s/http:\/\/localhost:8080/https:\/\/wads.zerofuchs.net:444\/iwads https:\/\/wads.zerofuchs.net:444\/pwads/g" ./configs/*
+sed -i "s/http:\/\/localhost:8080/https:\/\/wads.${WWWREGION}.${WWWDOMAIN}:444\/iwads https:\/\/wads.${WWWREGION}.${WWWDOMAIN}:444\/pwads/g" ./configs/*
 
 docker build -t odamex_python:latest -f Dockerfile.Python .
 docker build -t odamex:latest -f Dockerfile .
