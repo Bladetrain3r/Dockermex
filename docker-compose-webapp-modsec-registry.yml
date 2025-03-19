@@ -1,10 +1,9 @@
 services:
   wad-server:
-    image: nginx:modsec
+    image: registry.zerofuchs.co.za/nginx:modsec
     container_name: dockermex-frontend
-    build:
-      context: Dockermex_Frontend
-      dockerfile: Dockerfile
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - ./iwads:/iwads:ro
       - ./pwads:/pwads:ro
@@ -38,6 +37,8 @@ services:
       - ./service-configs:/service-configs
       - ./configs:/configs:ro
       - ./sqlite:/sqlite
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "5000:5000"
     environment:
@@ -60,9 +61,3 @@ networks:
 volumes:
   modsec_logs:
     driver: local
-
-# Notes for non-local registry:
-# docker tag nginx:modsec registry.url/nginx:modsec
-# docker push registry.url/nginx:modsec
-# docker tag dockermex:python registry.url/dockermex:python
-# docker push registry.url/dockermex:python
