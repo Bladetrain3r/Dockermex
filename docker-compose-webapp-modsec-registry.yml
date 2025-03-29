@@ -1,6 +1,6 @@
 services:
   wad-server:
-    image: registry.zerofuchs.co.za/nginx:modsec
+    image: your.docker.registry.com/dockermex/frontend
     container_name: dockermex-frontend
     security_opt:
       - no-new-privileges:true
@@ -25,10 +25,7 @@ services:
         aliases: ["wads.zerofuchs.local", "master"]
 
   wad-upload-api:
-    image: dockermex:python
-    build:
-      context: Dockermex_Api
-      dockerfile: Dockerfile.Python
+    image: your.docker.registry.com/dockermex/python
     container_name: dockermex-api
     volumes:
       - ./iwads:/iwads:ro
