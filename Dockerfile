@@ -5,6 +5,10 @@ WORKDIR /app
 RUN apt update && apt install -y g++ cmake git libfltk1.3-dev libsdl2-dev libsdl2-mixer-dev libcurl4-openssl-dev libpng-dev libjsoncpp-dev zlib1g-dev libportmidi-dev libprotobuf-dev
 COPY ./odamex /app/odamex
 
+# FLTK workaround
+WORKDIR /app/odamex/libraries
+RUN git clone https://github.com/fltk/fltk.git
+
 FROM builder-base AS srv
 WORKDIR /app/odamex/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv

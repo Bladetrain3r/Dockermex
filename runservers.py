@@ -64,12 +64,14 @@ def create_docker_service(config_name):
         iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
 
     odamount = os.path.abspath('./iwads/odamex.wad')
+    startup = os.path.abspath('./shell/runserver.sh')
 
     volumes = {
         config_mount: {'bind': f'/app/config/{config_file}', 'mode': 'ro'},
         pwad_mount: {'bind': f'/app/pwads/{pwad_file}', 'mode': 'ro'},
         iwad_mount: {'bind': f'/app/iwads/{iwad_file}', 'mode': 'ro'},
         odamount: {'bind': '/app/iwads/odamex.wad', 'mode': 'ro'},
+        startup: {'bind': '/app/runserver.sh', 'mode': 'ro'}
     }
 
     if not port:
@@ -87,7 +89,8 @@ def create_docker_service(config_name):
         detach=True,
         mem_limit='64m',
         # 1cpu = 1,000,000,000 nano_cpus
-        nano_cpus=250000000
+        nano_cpus=250000000,
+        network="wad-net",
     )
 
     print(f"Container {container.name} is running on port {port}\n")
