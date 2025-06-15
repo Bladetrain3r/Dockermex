@@ -39,14 +39,14 @@ fi
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 pwadparams=""
 for file in $pwads; do
-  pwadparams="$pwadparams -file /app/pwads/${file}"
+  pwadparams="$pwadparams /app/pwads/${file}"
 done
 
 cmd="/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport} ${maplist}"
 echo "Command: $cmd"
 
 # /app/server/odasrv +set sv_waddownload 1 -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist} > /home/odamex/.odamex/odasrv.log &
-/app/server/odasrv -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist} > /home/odamex/.odamex/odasrv.log &
+/app/server/odasrv -iwad "/app/iwads/${oiwad}" -file ${pwadparams} -port ${odaport} +MAP ${mapstring} -logfile /var/log/odamex/odasrv_${odaport}.log &
 
 sleep 72000
 exit 0
