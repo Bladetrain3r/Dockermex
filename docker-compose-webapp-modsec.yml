@@ -1,10 +1,12 @@
 services:
   wad-server:
-    image: nginx:modsec
+    image: dockermex:nginx-alpine
     container_name: dockermex-frontend
     build:
       context: Dockermex_Frontend
       dockerfile: Dockerfile
+    env_file:
+      - ".env"
     volumes:
       - ./iwads:/iwads:ro
       - ./pwads:/pwads:ro
@@ -13,10 +15,10 @@ services:
       - ./Dockermex_Frontend/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./Dockermex_Frontend/nginx/modsecurity:/etc/nginx/modsecurity:ro
       - ./Dockermex_Frontend/html:/usr/share/nginx/html:ro
-      - ./Dockermex_Frontend/ssl/private.key:/etc/nginx/ssl/private.key:ro
-      - ./Dockermex_Frontend/ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt:ro
-      - ./Dockermex_Frontend/ssl/wads.key:/etc/nginx/ssl/wads.key:ro
-      - ./Dockermex_Frontend/ssl/wads.crt:/etc/nginx/ssl/wads.crt:ro
+      - ${SSL_PRIVATE_KEY}:/etc/nginx/ssl/private.key:ro
+      - ${SSL_FULLCHAIN_CERT}:/etc/nginx/ssl/fullchain.crt:ro
+      - ${SSL_WADS_KEY}:/etc/nginx/ssl/wads.key:ro
+      - ${SSL_WADS_CERT}:/etc/nginx/ssl/wads.crt:ro
       - modsec_logs:/var/log/nginx/modsec
     ports: ["443:443", "444:444"]
     depends_on:
@@ -30,6 +32,8 @@ services:
     build:
       context: Dockermex_Api
       dockerfile: Dockerfile.Python
+    env_file:
+      - .env
     container_name: dockermex-api
     volumes:
       - ./iwads:/iwads:ro
@@ -41,6 +45,9 @@ services:
     ports:
       - "5000:5000"
     environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_SALT=${DB_SALT}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - FLASK_ENV=development
     deploy:
       resources:
