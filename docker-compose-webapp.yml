@@ -1,17 +1,16 @@
 services:
   wad-server:
-    image: nginx:alpine
+    image: dockermex:nginx-alpine
+    build:
+      context: Dockermex_Frontend
+      dockerfile: Dockerfile
     container_name: dockermex-frontend
     volumes:
       - ./iwads:/iwads:ro
       - ./pwads:/pwads:ro
       - ./Dockermex_Frontend/html/daisyfans:/daisyfans:ro
-      - ./Dockermex_Frontend/nginx_vol/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./Dockermex_Frontend/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./Dockermex_Frontend/html:/usr/share/nginx/html:ro
-      - ./Dockermex_Frontend/ssl/private.key:/etc/nginx/ssl/private.key:ro
-      - ./Dockermex_Frontend/ssl/fullchain.crt:/etc/nginx/ssl/fullchain.crt:ro
-      - ./Dockermex_Frontend/ssl/wads.key:/etc/nginx/ssl/wads.key:ro
-      - ./Dockermex_Frontend/ssl/wads.crt:/etc/nginx/ssl/wads.crt:ro
     ports: ["443:443", "444:444"]
     depends_on:
       - wad-upload-api
@@ -27,18 +26,24 @@ services:
 
   wad-upload-api:
     image: dockermex:python
+    build:
+      context: Dockermex_Api
+      dockerfile: Dockerfile.Python
     container_name: dockermex-api
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_SALT=${DB_SALT}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - FLASK_ENV=development
     volumes:
       - ./iwads:/iwads:ro
       - ./pwads:/pwads
       - ./Dockermex_Api/Python:/app:ro
       - ./service-configs:/service-configs
       - ./configs:/configs:ro
-      - ./sqlite:/sqlite
+      - ./sqlite:/sqlite    
     ports:
       - "5000:5000"
-    environment:
-      - FLASK_ENV=development
     deploy:
       resources:
         limits:

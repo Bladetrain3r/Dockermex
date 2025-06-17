@@ -1,6 +1,8 @@
 FROM nginx:alpine AS deps
 
 RUN apk add --no-cache \
+    pcre-dev \
+    pcre2-dev \
     gcc \
     libc-dev \
     make \
@@ -34,7 +36,7 @@ RUN ./build.sh && \
 # https://nginx.org/download/nginx-1.27.3.tar.gz
 
 # Get and compile the Nginx connector
-ENV NGINX_VERSION 1.27.4
+ENV NGINX_VERSION 1.27.5
 WORKDIR /
 RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
 RUN nginx -v 2>&1 | awk -F/ '{print $2}' > /tmp/nginx_version
@@ -42,7 +44,7 @@ RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar zxvf nginx-${NGINX_VERSION}.tar.gz
 
 FROM build AS configure
-ENV NGINX_VERSION 1.27.4
+ENV NGINX_VERSION 1.27.5
 WORKDIR /nginx-${NGINX_VERSION}
 RUN ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx && \
     make modules
