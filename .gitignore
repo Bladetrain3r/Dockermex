@@ -25,3 +25,5 @@ oda_configs/*
 html/daisyfans/*
 Dockerfiles/nginxd/*
 docs/DocPlan.md
+.ssl/*
+.env
