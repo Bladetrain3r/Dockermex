@@ -8,7 +8,7 @@ A full stack webapp being built with the explicit purpose of easily hosting DOOM
 Currently focused on Odamex as it's source port of choice.
 
 ## Goal and Purpose
-My goal with this is to make it easy for people to spin up a server with a mod set easily so folk can spin up a co-op or deathmatch server on a dime
+My goal with this is to make it easy for people to spin up a server with a mod set easily so folk can play co-op or deathmatch server on a dime
 The purpose is to provide a platform for one or multiple people to manage multiple Odamex servers and their provisioning with a few clicks. No need to fiddle with configs.
 Eventually, want to extend this to multiple multiplayer source ports, but Odamex is what I work with and it's a solid software package for the purpose.
 
