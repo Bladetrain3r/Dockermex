@@ -13,7 +13,7 @@ services:
     ports:
       - 10666:10666/udp        # Map container UDP port to host
     volumes:
-      - ${IWAD_FOLDER}:/app/iwads:ro        # Mount host IWADs folder
+      - ${iWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
       - ${PWAD_FOLDER}/duel:/app/pwads:ro        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -34,7 +34,7 @@ services:
     ports:
       - 10569:10569/udp         # Map container UDP port to host
     volumes:
-      - ${IWAD_FOLDER}:/app/iwads/:ro        # Mount host IWADs folder
+      - ${iWAD_FOLDER}/freeware:/app/iwads/:ro        # Mount host IWADs folder
       - ${PWAD_FOLDER}/dm:/app/pwads:ro        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -56,7 +56,7 @@ services:
     ports:
       - 10571:10571/udp         # Map container UDP port to host
     volumes:
-      - ${IWAD_FOLDER}:/app/iwads:ro        # Mount host IWADs folder
+      - ${iWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
       - ${PWAD_FOLDER}/nil:/app/pwads:ro        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
@@ -78,7 +78,7 @@ services:
     ports:
       - 10572:10572/udp        # Map container UDP port to host
     volumes:
-      - ${iWAD_FOLDER}:/app/iwads:ro        # Mount host IWADs folder
+      - ${iWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
       - ${PWAD_FOLDER}/scythe:/app/pwads:ro        # Mount host PWADs folder
       - ./configs:/app/config     # Mount config folder for custom configurations
     deploy:
