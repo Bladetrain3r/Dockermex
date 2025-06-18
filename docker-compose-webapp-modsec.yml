@@ -7,9 +7,14 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ".env"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"             
+          memory: "256M"  
     volumes:
-      - ./iwads:/iwads:ro
-      - ./pwads:/pwads:ro
+      - ${IWAD_FOLDER}:/iwads:ro
+      - ${PWAD_FOLDER}:/pwads:ro
       - ./Dockermex_Frontend/html/daisyfans:/daisyfans:ro
       - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf:ro
       - ${NGINX_INCLUDES_PATH}:/etc/nginx/conf.d:ro
@@ -24,7 +29,7 @@ services:
       - wad-upload-api
     networks:
       wad-net:
-        aliases: ["wads.zerofuchs.local", "master"]
+        aliases: ["${WAD_DOWNLOAD_URL}", "master"]
 
   wad-upload-api:
     image: dockermex:python
@@ -35,8 +40,8 @@ services:
       - .env
     container_name: dockermex-api
     volumes:
-      - ./iwads:/iwads:ro
-      - ./pwads:/pwads
+      - ${IWAD_FOLDER}:/iwads:ro
+      - ${PWAD_FOLDER}:/pwads:ro
       - ./Dockermex_Api/Python:/app:ro
       - ./service-configs:/service-configs
       - ./configs:/configs:ro

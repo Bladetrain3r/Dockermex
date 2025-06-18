@@ -20,7 +20,7 @@ COPY ./odamex /app/odamex
 
 # FLTK workaround
 WORKDIR /app/odamex/libraries
-RUN git clone https://github.com/fltk/fltk.git
+# RUN git clone https://github.com/fltk/fltk.git
 
 FROM builder-base AS srv
 WORKDIR /app/odamex/build
@@ -28,8 +28,8 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv
 
 FROM builder-base AS wad
 COPY ./odamex /app/odamex
-COPY ./deutex /app/deutex
 RUN apt update && apt install -y git make gcc autoconf autoconf-archive automake pkg-config
+RUN git clone https://github.com/Doom-Utils/deutex /app/deutex
 WORKDIR /app/deutex
 RUN ./bootstrap && ./configure && make && make install
 ENV DEUTEX=/usr/local/bin/deutex
