@@ -1,0 +1,241 @@
+services:
+  odamex_duel_freedoom1:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_duel_freedoom1
+    environment:
+      - IWAD=freedoom1.wad           # Specify the default IWAD here
+      - CONFIGFILE=duel-doom.cfg     # Specify the configuration file if needed
+      - ODAPORT=10666
+    ports:
+      - 10666:10666/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/duel:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+
+  odamex_duel_freedoom2:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_duel_freedoom2
+    environment:
+      - IWAD=freedoom2.wad           # Specify the default IWAD here
+      - CONFIGFILE=duel-doom.cfg     # Specify the configuration file if needed
+      - ODAPORT=10566
+    ports:
+      - 10566:10566/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/duel:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+
+  odamex_duel_freedm:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_duel_freedm
+    environment:
+      - ODAPORT=10567
+      - CONFIGFILE=duel-doom.cfg
+    ports:
+      - 10567:10567/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/duel:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+    
+  odamex_dm_freedm1:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_dm_freedm
+    environment:
+      - ODAPORT=10568
+      - CONFIGFILE=dm-doom.cfg
+    ports:
+      - 10568:10568/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/dm:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+
+  odamex_dm_freedm2:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_dm_freedm2
+    environment:
+      - ODAPORT=10569
+      - CONFIGFILE=dm-doom.cfg
+    ports:
+      - 10569:10569/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/dm:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+
+  odamex_coop_freedoom1:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_coop_freedoom1
+    environment:
+      - IWAD=freedoom1.wad
+      - ODAPORT=10570
+      - CONFIGFILE=coop-doom.cfg
+    ports:
+      - 10570:10570/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped    
+
+  odamex_coop_freedoom2:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_coop_freedoom2
+    environment:
+      - IWAD=freedoom2.wad
+      - ODAPORT=10571
+      - CONFIGFILE=coop-doom.cfg
+    ports:
+      - 10571:10571/udp         # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/coop:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             # Restrict CPU
+          memory: "64M"          
+    restart: unless-stopped
+
+  odamex_coop_nuts:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_coop_nuts
+    environment:
+      - IWAD=DOOM2.WAD           # Specify the default IWAD here
+      - CONFIGFILE=coop-nuts.cfg    # Specify the configuration file if needed
+      - ODAPORT=10565
+    ports:
+      - 10565:10565/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
+      - ./pwads/nuts:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5" 
+          memory: "384M"          
+    restart: unless-stopped
+
+  odamex_coop_deus_vultII:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_coop_deus_vultII
+    environment:
+      - IWAD=freedoom2.wad          # Specify the default IWAD here
+      - CONFIGFILE=coop-dvii.cfg    # Specify the configuration file if needed
+      - ODAPORT=10572
+    ports:
+      - 10572:10572/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
+      - ./pwads/dv2:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2" 
+          memory: "256M"          
+    restart: unless-stopped
+
+  odamex_lunchbreak_1:
+    build:
+      context: .
+    image: odamex:latest
+    container_name: odamex_lunchbreak_1
+    environment:
+      - IWAD=plutonia.wad          # Specify the default IWAD here
+      - CONFIGFILE=coop-lunchbreak.cfg    # Specify the configuration file if needed
+      - ODAPORT=10573
+    ports:
+      - 10573:10573/udp        # Map container UDP port to host
+    volumes:
+      - ./iwads/commercial:/app/iwads        # Mount host IWADs folder
+      - ./pwads/lunchbreak24:/app/pwads        # Mount host PWADs folder
+      - ./configs:/app/config     # Mount config folder for custom configurations
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             
+          memory: "64M"          
+    restart: unless-stopped
+
+  wad-server:
+    image: nginx:alpine
+    container_name: nginx_wads
+    volumes:
+      - ./iwads/freeware:/iwads
+      - ./pwads:/pwads
+    ports:
+      - "8080:80"
+    entrypoint: |
+      sh -c '
+      cp /iwads/* /usr/share/nginx/html/
+      cp /pwads/coop/* /usr/share/nginx/html/
+      cp /pwads/nuts/* /usr/share/nginx/html/
+      cp /pwads/dv2/* /usr/share/nginx/html/
+      cp /pwads/lunchbreak24/* /usr/share/nginx/html/
+      nginx -g "daemon off;"
+      '
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"             
+          memory: "256M"          
+    restart: unless-stopped

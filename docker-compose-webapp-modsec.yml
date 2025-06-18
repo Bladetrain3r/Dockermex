@@ -11,15 +11,14 @@ services:
       - ./iwads:/iwads:ro
       - ./pwads:/pwads:ro
       - ./Dockermex_Frontend/html/daisyfans:/daisyfans:ro
-      - ./Dockermex_Frontend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./Dockermex_Frontend/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./Dockermex_Frontend/nginx/modsecurity:/etc/nginx/modsecurity:ro
-      - ./Dockermex_Frontend/html:/usr/share/nginx/html:ro
+      - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf:ro
+      - ${NGINX_INCLUDES_PATH}:/etc/nginx/conf.d:ro
+      - ${MODSECURITY_RULES_PATH}:/etc/nginx/modsecurity:ro
+      - ${WEBAPP_ROOT_PATH}:/usr/share/nginx/html:ro
       - ${SSL_PRIVATE_KEY}:/etc/nginx/ssl/private.key:ro
       - ${SSL_FULLCHAIN_CERT}:/etc/nginx/ssl/fullchain.crt:ro
       - ${SSL_WADS_KEY}:/etc/nginx/ssl/wads.key:ro
       - ${SSL_WADS_CERT}:/etc/nginx/ssl/wads.crt:ro
-      - modsec_logs:/var/log/nginx/modsec
     ports: ["443:443", "444:444"]
     depends_on:
       - wad-upload-api
