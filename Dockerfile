@@ -2,7 +2,20 @@
 
 FROM ubuntu:latest AS builder-base
 WORKDIR /app
-RUN apt update && apt install -y g++ cmake git libfltk1.3-dev libsdl2-dev libsdl2-mixer-dev libcurl4-openssl-dev libpng-dev libjsoncpp-dev zlib1g-dev libportmidi-dev libprotobuf-dev
+RUN apt update && \
+    apt install -y g++ \
+    cmake \
+    git \
+    libfltk1.3-dev \
+    libsdl2-dev \
+    libsdl2-mixer-dev \
+    libcurl4-openssl-dev \
+    libpng-dev \
+    libjsoncpp-dev \
+    zlib1g-dev \
+    libportmidi-dev \
+    libprotobuf-dev
+    
 COPY ./odamex /app/odamex
 
 # FLTK workaround
