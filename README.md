@@ -5,12 +5,17 @@
 ## What is it?
 
 A full stack webapp being built with the explicit purpose of easily hosting DOOM servers with custom WADS or with different server configs.
-Currently focused on Odamex as it's source port of choice.
+Currently focused on Odamex as the source port of choice.
 
 ## Goal and Purpose
-My goal with this is to make it easy for people to spin up a server with a mod set easily so folk can play co-op or deathmatch server on a dime
+My goal with this is to make it easy for people to spin up a server with a mod set, so folk can play co-op or deathmatch on a dime.
 The purpose is to provide a platform for one or multiple people to manage multiple Odamex servers and their provisioning with a few clicks. No need to fiddle with configs.
 Eventually, want to extend this to multiple multiplayer source ports, but Odamex is what I work with and it's a solid software package for the purpose.
+
+Who is this for?
+- Mappers who want to test their map or mmapset with a group of people, or specifically want to test co-op maps.
+- People who just want to spin up a server and play with friends or clan mates without a whole lot of time getting server and client stuff working.
+- People who want to host DOOM multiplayer for any given reason.
 
 ## Current Features
 - Upload and manage WAD files through a session based web interface
@@ -21,9 +26,7 @@ Eventually, want to extend this to multiple multiplayer source ports, but Odamex
 - WAD download mirror built in
 - Commercial IWADs blocked from upload or download
 
-## Design Principles
-
-Which I'm striving for even if I can do better.
+## Design Aspirations
 
 *A Declarative Webapp*
 The user declares what they want, the application handles making it so.
@@ -51,8 +54,12 @@ Easy testing locally
 Easy setup on the remote host
 
 *One Man Project*
-It's not all gonna be enterprise grade because, while many people work on the many third party tools used by Dockermex, the project itself is just me.
-But, within that limitation, it will be the best quality of application possible for my capabilities.
+While many people work on the many third party tools used by Dockermex, the project itself is just me right now.
+With that in mind, the aspiration is to:
+- Keep scope creep in check
+- Minimise complexity
+- Overengineer only where needed
+- Make the code accessible for anyone interested in forking or contributing.
 
 ## Initial Setup
 
@@ -87,6 +94,8 @@ Everything else should happen within the containers or be included as part of th
 - **Database**: SQLite (user management, WAD registry)
 - **Game Servers**: Odamex in Docker containers (the actual DOOM servers)
 
-### Support
+## Support
 - GitHub Issues for bugs
 - Doomworld forums (zerofuchs)
+
+
