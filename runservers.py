@@ -3,9 +3,29 @@ import os
 from time import sleep
 import docker
 from docker.errors import NotFound
+from dotenv import load_dotenv
 
-BASE_PORT = 10564
-MAX_PORT = 10576
+# Load environment variables from .env file
+# Note: Requires python-dotenv package: pip install python-dotenv
+load_dotenv()
+
+# Validate critical environment variables
+def validate_environment():
+    """Validate that required environment variables and paths exist."""
+    iwad_folder = os.getenv('IWAD_FOLDER', './iwads')
+    pwad_folder = os.getenv('PWAD_FOLDER', './pwads')
+    
+    if not os.path.exists(iwad_folder):
+        print(f"Warning: IWAD folder '{iwad_folder}' does not exist")
+    if not os.path.exists(pwad_folder):
+        print(f"Warning: PWAD folder '{pwad_folder}' does not exist")
+        
+    # Only validate critical paths exist, don't auto-create
+    
+validate_environment()
+
+BASE_PORT = int(os.getenv('ODAPORT', 10666))
+MAX_PORT = BASE_PORT + 12  # Allow for 12 additional ports
 
 def find_available_port():
     """Find an available port in the defined range."""
@@ -30,6 +50,76 @@ def find_available_port():
     return False
 
 
+def determine_pwad_category(config_name, config):
+    """Determine PWAD category/subfolder based on config name and content."""
+    # Extract category from config name pattern
+    # Examples: dm-modern_freedm_.json -> dm, coop-modern_freedoom1_.json -> coop
+    if 'dm' in config_name.lower():
+        return 'dm'
+    elif 'duel' in config_name.lower():
+        return 'duel'
+    elif 'coop' in config_name.lower():
+        return 'coop'
+    elif 'ctf' in config_name.lower():
+        return 'ctf'
+    
+    # Check config file for hints
+    config_file = config.get('configFile', '').lower()
+    if 'dm' in config_file:
+        return 'dm'
+    elif 'duel' in config_file:
+        return 'duel'
+    elif 'coop' in config_file:
+        return 'coop'
+    elif 'ctf' in config_file:
+        return 'ctf'
+    
+    # Default category
+    return 'misc'
+
+
+def build_volume_mounts(iwad_folder, pwad_folder, configs_path, 
+                       iwad_subfolder, pwad_category, 
+                       iwad_file, pwad_file, config_file):
+    """Build Docker volume mounts based on environment paths and WAD categories."""
+    volumes = {}
+    
+    # Config file mount
+    config_mount = os.path.abspath(os.path.join(configs_path, config_file))
+    volumes[config_mount] = {'bind': f'/app/config/{config_file}', 'mode': 'ro'}
+    
+    # IWAD mount - mount the specific subfolder
+    iwad_subfolder_path = os.path.abspath(os.path.join(iwad_folder, iwad_subfolder))
+    volumes[iwad_subfolder_path] = {'bind': '/app/iwads', 'mode': 'ro'}
+    
+    # PWAD mount - only mount if PWADs are actually specified and needed
+    if pwad_file and pwad_file.strip():  # Only if PWAD file is specified
+        pwad_category_path = os.path.abspath(os.path.join(pwad_folder, pwad_category))
+        if os.path.exists(pwad_category_path):
+            volumes[pwad_category_path] = {'bind': '/app/pwads', 'mode': 'ro'}
+        else:
+            print(f"Warning: PWAD category folder '{pwad_category_path}' does not exist")
+            # Don't create stub - let container handle missing pwads gracefully
+    else:
+        # For configs with no PWADs, mount an empty stub only if it already exists
+        stub_path = os.path.abspath(os.path.join(pwad_folder, 'stub'))
+        if os.path.exists(stub_path):
+            volumes[stub_path] = {'bind': '/app/pwads', 'mode': 'ro'}
+        # Otherwise, don't mount anything for PWADs
+    
+    # Add odamex.wad if it exists
+    odamex_wad = os.path.abspath(os.path.join(iwad_folder, 'odamex.wad'))
+    if os.path.exists(odamex_wad):
+        volumes[odamex_wad] = {'bind': '/app/iwads/odamex.wad', 'mode': 'ro'}
+    
+    # Add startup script if it exists
+    startup_script = os.path.abspath('./shell/runserver.sh')
+    if os.path.exists(startup_script):
+        volumes[startup_script] = {'bind': '/app/runserver.sh', 'mode': 'ro'}
+    
+    return volumes
+
+
 def create_docker_service(config_name):
     """Create and run a new Docker service based on the configuration JSON."""
     client = docker.from_env()
@@ -42,55 +132,92 @@ def create_docker_service(config_name):
     # Get available port
     port = find_available_port()
 
-    # Environment and volume settings
+    # Get paths from environment variables
+    iwad_folder = os.getenv('IWAD_FOLDER', './iwads')
+    pwad_folder = os.getenv('PWAD_FOLDER', './pwads')
+    configs_path = os.getenv('ODAMEX_CONFIGS_PATH', './configs')
+    
+    # Resource limits from env
+    cpu_limit = os.getenv('ODAMEX_CPU_LIMIT', '0.2')
+    memory_limit = os.getenv('ODAMEX_MEMORY_LIMIT', '64M')
+
+    # Environment variables for container
     env_vars = {
         'CONFIGFILE': config["configFile"],
         'IWAD': config["iwadFile"],
         'ODAPORT': port
     }
-    config_file = config.get("configFile")
-    config_mount = os.path.abspath(f'./configs/{config_file}') if config_file else os.path.abspath('./configs/default.cfg')
-    pwad_file = config.get("pwadFile")
-    pwad_mount = os.path.abspath(f'./pwads/{pwad_file}') if pwad_file else os.path.abspath(f'./pwads/stub')
-    print(f"pwad_file: {pwad_file}, pwad_mount: {pwad_mount}")
-    iwad_file = config.get("iwadFile")
-    if iwad_file:
-        iwad_mount = os.path.abspath(f'./iwads/commercial/{iwad_file}')
-        if not os.path.exists(iwad_mount):
-            iwad_mount = os.path.abspath(f'./iwads/freeware/{iwad_file}')
-            if not os.path.exists(iwad_mount):
-                iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
-    else:
-        iwad_mount = os.path.abspath('./iwads/freeware/freedoom2.wad')
-
-    odamount = os.path.abspath('./iwads/odamex.wad')
-    startup = os.path.abspath('./shell/runserver.sh')
-
-    volumes = {
-        config_mount: {'bind': f'/app/config/{config_file}', 'mode': 'ro'},
-        pwad_mount: {'bind': f'/app/pwads/{pwad_file}', 'mode': 'ro'},
-        iwad_mount: {'bind': f'/app/iwads/{iwad_file}', 'mode': 'ro'},
-        odamount: {'bind': '/app/iwads/odamex.wad', 'mode': 'ro'},
-        startup: {'bind': '/app/runserver.sh', 'mode': 'ro'}
-    }
+    
+    # Determine WAD category/subfolder based on config
+    iwad_file = config.get("iwadFile", "freedoom2.wad")
+    pwad_file = config.get("pwadFile", "")
+    config_file = config.get("configFile", "default.cfg")
+    
+    # Determine IWAD subfolder (commercial vs freeware)
+    iwad_subfolder = "freeware"  # Default
+    commercial_iwads = ["doom.wad", "doom2.wad", "plutonia.wad", "tnt.wad", "heretic.wad", "hexen.wad"]
+    if iwad_file.lower() in [iw.lower() for iw in commercial_iwads]:
+        iwad_subfolder = "commercial"
+    
+    # Determine PWAD category from config name or explicit mapping
+    pwad_category = determine_pwad_category(config_name, config)
+    
+    # Build volume mounts using env-defined paths
+    volumes = build_volume_mounts(
+        iwad_folder, pwad_folder, configs_path,
+        iwad_subfolder, pwad_category, 
+        iwad_file, pwad_file, config_file
+    )
 
     if not port:
         print("No available ports found")
         return
 
+    # Convert CPU limit to nano_cpus (1 CPU = 1,000,000,000 nano_cpus)
+    nano_cpus = int(float(cpu_limit) * 1_000_000_000)
+    
+    print(f"Creating container {strip_config} with:")
+    print(f"  Port: {port}")
+    print(f"  IWAD: {iwad_file} (from {iwad_subfolder})")
+    print(f"  PWAD Category: {pwad_category}")
+    print(f"  Config: {config_file}")
+    print(f"  CPU Limit: {cpu_limit} ({nano_cpus} nano_cpus)")
+    print(f"  Memory Limit: {memory_limit}")
+
+    # Sanitize container name (replace problematic characters)
+    container_name = f"odamex_{strip_config}".replace('-', '_')
+    
+    # Determine the correct network name
+    networks = client.networks.list()
+    wad_network = None
+    
+    # Look for dockermex_wad-net first, then fall back to wad-net
+    for network in networks:
+        if network.name == 'dockermex_wad-net':
+            wad_network = network.name
+            break
+        elif 'wad-net' in network.name or network.name == 'wad-net':
+            wad_network = network.name
+    
+    if not wad_network:
+        print("Warning: No wad-net network found, using default bridge")
+        wad_network = "bridge"
+    
+    print(f"  Using network: {wad_network}")
+    print(f"  Container name: {container_name}")
+
     # Run the container
     container = client.containers.run(
-        image="dockermex:nodamex.managed",
-        name=f"odamex_{strip_config}",
-        ports={f'{port}/udp':port},
+        image="odamex:latest",  # Updated to match docker-compose
+        name=container_name,
+        ports={f'{port}/udp': port},
         environment=env_vars,
         volumes=volumes,
         restart_policy={"Name": "unless-stopped"},
         detach=True,
-        mem_limit='64m',
-        # 1cpu = 1,000,000,000 nano_cpus
-        nano_cpus=250000000,
-        network="wad-net",
+        mem_limit=memory_limit,
+        nano_cpus=nano_cpus,
+        network=wad_network,
     )
 
     print(f"Container {container.name} is running on port {port}\n")
@@ -100,17 +227,32 @@ def stop_docker_service(config_name):
     """Stop and remove a Docker service based on the configuration JSON."""
     client = docker.from_env()
     strip_config = config_name.strip('.json')
+    container_name = f"odamex_{strip_config}".replace('-', '_')
 
     try:
-        container = client.containers.get(f"odamex_{strip_config}")
+        container = client.containers.get(container_name)
     except NotFound:
-        print(f"Container odamex_{strip_config} not found")
+        print(f"Container {container_name} not found")
         return False
 
-    container.stop()
-    container.remove()
-    print(f"Container odamex_{strip_config} stopped and removed")
-    return True
+    try:
+        # Stop with timeout
+        container.stop(timeout=10)
+        # Wait for stop to complete before removing
+        container.wait()
+        container.remove()
+        print(f"Container {container_name} stopped and removed")
+        return True
+    except Exception as e:
+        print(f"Error stopping/removing container {container_name}: {e}")
+        # Try force removal if normal stop fails
+        try:
+            container.remove(force=True)
+            print(f"Container {container_name} force removed")
+            return True
+        except Exception as e2:
+            print(f"Failed to force remove container {container_name}: {e2}")
+            return False
 
 def docker_spinup():
     """Spin up all the containers in the service-configs directory."""
@@ -120,7 +262,8 @@ def docker_spinup():
             client = docker.from_env()
             strip_config = item.strip('.json')
             try:
-                container = client.containers.get(f"odamex_{strip_config}")
+                container_name = f"odamex_{strip_config}".replace('-', '_')
+                container = client.containers.get(container_name)
                 print(f"Container {container.name} already running")
             except NotFound:
                 print(f"Attempting to launch {strip_config}")
