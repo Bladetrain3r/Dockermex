@@ -17,5 +17,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             
-          memory: "64M"          
+          cpus: "${ODAMEX_CPU_LIMIT}"             
+          memory: "${ODAMEX_MEMORY_LIMIT}"

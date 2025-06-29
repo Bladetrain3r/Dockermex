@@ -19,8 +19,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict CPU
-          memory: "64M"          
+          cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
+          memory: "${ODAMEX_MEMORY_LIMIT}"          
     restart: unless-stopped
 
   odamex_dm_freedm2:
@@ -40,8 +40,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict CPU
-          memory: "64M"          
+          cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
+          memory: "${ODAMEX_MEMORY_LIMIT}"
     restart: unless-stopped  
 
   odamex_coop_freedoom2:
@@ -62,8 +62,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"             # Restrict CPU
-          memory: "64M"          
+          cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
+          memory: "${ODAMEX_MEMORY_LIMIT}"          
     restart: unless-stopped
 
   odamex_coop_deus_vultII:
@@ -84,8 +84,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2" 
-          memory: "64M"          
+          cpus: "${ODAMEX_CPU_LIMIT}" 
+          memory: "${ODAMEX_MEMORY_LIMIT}"
     restart: unless-stopped
 
 

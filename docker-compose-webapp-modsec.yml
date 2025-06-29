@@ -10,8 +10,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1"             
-          memory: "256M"  
+          cpus: "${FRONTEND_CPU_LIMIT}"             
+          memory: "${FRONTEND_MEMORY_LIMIT}"
     volumes:
       - ${IWAD_FOLDER}:/iwads:ro
       - ${PWAD_FOLDER}:/pwads:ro
@@ -56,8 +56,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1"             
-          memory: "128M"          
+          cpus: "${API_CPU_LIMIT}"             
+          memory: "${API_MEMORY_LIMIT}"
     networks:
       wad-net:
         aliases:

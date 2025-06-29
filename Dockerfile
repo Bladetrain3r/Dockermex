@@ -39,7 +39,10 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
 # Runtime Stage
 
 FROM ubuntu:latest AS server
-ENV ODAPORT=10666
+# Use ARG for build-time port configuration with default value
+ARG ODAPORT=10666
+# Set ENV from ARG for runtime
+ENV ODAPORT=${ODAPORT}
 WORKDIR /app 
 RUN useradd -m odamex && chown -R odamex:odamex /app
 RUN apt update && apt install -y dos2unix

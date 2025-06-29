@@ -1,0 +1,73 @@
+# FreeDOOM WAD Builder Container
+# This container builds FreeDOOM WADs from source and provides them as build artifacts
+#
+# Usage:
+# docker build -f Dockerfile.freedoom -t freedoom-builder .
+# docker run --name freedoom-temp freedoom-builder
+# docker cp freedoom-temp:/app/freedoom/wads/ ./
+# docker rm freedoom-temp
+# docker rmi freedoom-builder
+
+FROM ubuntu:latest AS freedoom-builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    make \
+    python3 \
+    python3-pil \
+    zip \
+    libtool \
+    libpng-dev \
+    gcc \
+    autoconf \
+    autoconf-archive \
+    automake \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone and build DeuTex (required for FreeDOOM build)
+RUN git clone https://github.com/Doom-Utils/deutex.git /app/deutex
+WORKDIR /app/deutex
+RUN ./bootstrap && ./configure && make && make install
+
+# Set DeuTex environment variable
+ENV DEUTEX=/usr/local/bin/deutex
+
+# Clone FreeDOOM repository
+WORKDIR /app
+RUN git clone https://github.com/freedoom/freedoom.git
+
+# Build FreeDOOM WADs
+WORKDIR /app/freedoom
+RUN make
+
+# Create output directory and copy WADs
+RUN mkdir -p /app/output && \
+    cp wads/*.wad /app/output/ && \
+    ls -la /app/output/
+
+# Verify WADs were created
+RUN echo "Built WADs:" && ls -la /app/output/ && \
+    echo "WAD file sizes:" && du -h /app/output/*.wad
+
+# Create a simple script to list what was built
+RUN echo '#!/bin/bash' > /app/list_wads.sh && \
+    echo 'echo "FreeDOOM WADs built successfully:"' >> /app/list_wads.sh && \
+    echo 'ls -la /app/output/' >> /app/list_wads.sh && \
+    echo 'echo ""' >> /app/list_wads.sh && \
+    echo 'echo "File details:"' >> /app/list_wads.sh && \
+    echo 'file /app/output/*.wad' >> /app/list_wads.sh && \
+    chmod +x /app/list_wads.sh
+
+# Default command shows what was built
+CMD ["/app/list_wads.sh"]
+
+# Labels for metadata
+LABEL maintainer="zerofuchs"
+LABEL description="FreeDOOM WAD builder container"
+LABEL version="1.0"
+LABEL purpose="Build FreeDOOM WADs from source for Dockermex"
