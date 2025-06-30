@@ -16,7 +16,7 @@ RUN apt update && \
     libportmidi-dev \
     libprotobuf-dev
     
-COPY ./odamex /app/odamex
+RUN git clone --depth 1 https://github.com/odamex/odamex.git --recurse-submodules
 
 # FLTK workaround
 WORKDIR /app/odamex/libraries
@@ -27,7 +27,6 @@ WORKDIR /app/odamex/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odasrv
 
 FROM builder-base AS wad
-COPY ./odamex /app/odamex
 RUN apt update && apt install -y git make gcc autoconf autoconf-archive automake pkg-config
 RUN git clone https://github.com/Doom-Utils/deutex /app/deutex
 WORKDIR /app/deutex
