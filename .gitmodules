@@ -1,6 +1,0 @@
-[submodule "Dockermex_Frontend"]
-	path = Dockermex_Frontend
-	url = https://github.com/Bladetrain3r/Dockermex_Frontend.git
-[submodule "Dockermex_Api"]
-	path = Dockermex_Api
-	url = https://github.com/Bladetrain3r/Dockermex_Api.git
