@@ -11,9 +11,9 @@ services:
     ports:
       - {{PORT}}:{{PORT}}/udp        # Map container UDP port to host
     volumes:
-      - ./iwads/freeware:/app/iwads        # Mount host IWADs folder
-      - ./pwads:/app/pwads        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
+      - ${IWAD_FOLDER}/{{IWAD_CATEGORY}}:/app/iwads:ro
+      - ${PWAD_FOLDER}/{{PWAD_CATEGORY}}:/app/pwads:ro
+      - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
         limits:

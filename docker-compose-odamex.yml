@@ -7,86 +7,103 @@ services:
     env_file:
       - .env
     environment:
-      - IWAD=freedoom1.wad           # Specify the default IWAD here
-      - CONFIGFILE=dm-modern.cfg  # Specify the configuration file if needed
+      - IWAD=freedoom1.wad
+      - CONFIGFILE=dm-modern.cfg
       - ODAPORT=10666
     ports:
-      - 10666:10666/udp        # Map container UDP port to host
+      - 10666:10666/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
-      - ${PWAD_FOLDER}/duel:/app/pwads:ro        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
+      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${PWAD_FOLDER}/duel:/app/pwads:ro
+      - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
         limits:
           cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
           memory: "${ODAMEX_MEMORY_LIMIT}"          
     restart: unless-stopped
+    networks:
+      - wad-net
 
   odamex_dm_freedm2:
     build:
       context: .
     image: odamex:latest
     container_name: odamex_dm_freedm
+    env_file:
+      - .env
     environment:
-      - ODAPORT=10569
+      - IWAD=freedm.wad
       - CONFIGFILE=dm-modern.cfg
+      - ODAPORT=10569
     ports:
-      - 10569:10569/udp         # Map container UDP port to host
+      - 10569:10569/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads/:ro        # Mount host IWADs folder
-      - ${PWAD_FOLDER}/dm:/app/pwads:ro        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
+      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${PWAD_FOLDER}/dm:/app/pwads:ro
+      - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
         limits:
-          cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
+          cpus: "${ODAMEX_CPU_LIMIT}"
           memory: "${ODAMEX_MEMORY_LIMIT}"
-    restart: unless-stopped  
+    restart: unless-stopped
+    networks:
+      - wad-net
 
   odamex_coop_freedoom2:
     build:
       context: .
     image: odamex:latest
     container_name: odamex_coop_freedoom2
+    env_file:
+      - .env
     environment:
       - IWAD=freedoom2.wad
-      - ODAPORT=10571
       - CONFIGFILE=coop-full-throttle.cfg
+      - ODAPORT=10571
     ports:
-      - 10571:10571/udp         # Map container UDP port to host
+      - 10571:10571/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
-      - ${PWAD_FOLDER}/nil:/app/pwads:ro        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
+      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${PWAD_FOLDER}/coop:/app/pwads:ro
+      - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
         limits:
-          cpus: "${ODAMEX_CPU_LIMIT}"             # Restrict CPU
-          memory: "${ODAMEX_MEMORY_LIMIT}"          
+          cpus: "${ODAMEX_CPU_LIMIT}"
+          memory: "${ODAMEX_MEMORY_LIMIT}"
     restart: unless-stopped
+    networks:
+      - wad-net
 
   odamex_coop_deus_vultII:
     build:
       context: .
     image: odamex:latest
     container_name: odamex_coop_deus_vultII
+    env_file:
+      - .env
     environment:
-      - IWAD=freedoom2.wad          # Specify the default IWAD here
-      - CONFIGFILE=coop-modern.cfg    # Specify the configuration file if needed
+      - IWAD=freedoom2.wad
+      - CONFIGFILE=coop-modern.cfg
       - ODAPORT=10572
     ports:
-      - 10572:10572/udp        # Map container UDP port to host
+      - 10572:10572/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro        # Mount host IWADs folder
-      - ${PWAD_FOLDER}/scythe:/app/pwads:ro        # Mount host PWADs folder
-      - ./configs:/app/config     # Mount config folder for custom configurations
+      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${PWAD_FOLDER}/scythe:/app/pwads:ro
+      - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
         limits:
-          cpus: "${ODAMEX_CPU_LIMIT}" 
+          cpus: "${ODAMEX_CPU_LIMIT}"
           memory: "${ODAMEX_MEMORY_LIMIT}"
     restart: unless-stopped
+    networks:
+      - wad-net
 
-
+networks:
+  wad-net:
+    driver: bridge
 

@@ -84,33 +84,27 @@ def build_volume_mounts(iwad_folder, pwad_folder, configs_path,
     """Build Docker volume mounts based on environment paths and WAD categories."""
     volumes = {}
     
-    # Config file mount
-    config_mount = os.path.abspath(os.path.join(configs_path, config_file))
-    volumes[config_mount] = {'bind': f'/app/config/{config_file}', 'mode': 'ro'}
+    # Config directory mount (mount entire config directory for consistency)
+    config_dir_path = os.path.abspath(configs_path)
+    volumes[config_dir_path] = {'bind': '/app/config', 'mode': 'ro'}
     
     # IWAD mount - mount the specific subfolder
     iwad_subfolder_path = os.path.abspath(os.path.join(iwad_folder, iwad_subfolder))
-    volumes[iwad_subfolder_path] = {'bind': '/app/iwads', 'mode': 'ro'}
-    
-    # PWAD mount - only mount if PWADs are actually specified and needed
-    if pwad_file and pwad_file.strip():  # Only if PWAD file is specified
-        pwad_category_path = os.path.abspath(os.path.join(pwad_folder, pwad_category))
-        if os.path.exists(pwad_category_path):
-            volumes[pwad_category_path] = {'bind': '/app/pwads', 'mode': 'ro'}
-        else:
-            print(f"Warning: PWAD category folder '{pwad_category_path}' does not exist")
-            # Don't create stub - let container handle missing pwads gracefully
+    if os.path.exists(iwad_subfolder_path):
+        volumes[iwad_subfolder_path] = {'bind': '/app/iwads', 'mode': 'ro'}
     else:
-        # For configs with no PWADs, mount an empty stub only if it already exists
+        print(f"Warning: IWAD subfolder '{iwad_subfolder_path}' does not exist")
+    
+    # PWAD mount - always attempt to mount the category folder
+    pwad_category_path = os.path.abspath(os.path.join(pwad_folder, pwad_category))
+    if os.path.exists(pwad_category_path):
+        volumes[pwad_category_path] = {'bind': '/app/pwads', 'mode': 'ro'}
+    else:
+        print(f"Warning: PWAD category folder '{pwad_category_path}' does not exist")
+        # Mount an empty stub folder if it exists, otherwise don't mount PWADs
         stub_path = os.path.abspath(os.path.join(pwad_folder, 'stub'))
         if os.path.exists(stub_path):
             volumes[stub_path] = {'bind': '/app/pwads', 'mode': 'ro'}
-        # Otherwise, don't mount anything for PWADs
-    
-    # Add odamex.wad if it exists
-    odamex_wad = os.path.abspath(os.path.join(iwad_folder, 'odamex.wad'))
-    if os.path.exists(odamex_wad):
-        volumes[odamex_wad] = {'bind': '/app/iwads/odamex.wad', 'mode': 'ro'}
     
     # Add startup script if it exists
     startup_script = os.path.abspath('./shell/runserver.sh')

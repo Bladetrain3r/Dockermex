@@ -39,14 +39,27 @@ fi
 pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 pwadparams=""
 for file in $pwads; do
-  pwadparams="$pwadparams /app/pwads/${file}"
+  pwadparams="$pwadparams $file"
 done
 
-cmd="/app/server/odasrv -iwad "/app/iwads/${oiwad}" ${pwadparams} -port ${odaport} ${maplist}"
+# Copy PWADs to odamex directory for easier access
+if [ -n "$pwadparams" ]; then
+  echo "Copying PWADs to odamex directory..."
+  for file in $pwads; do
+    cp "/app/pwads/${file}" /home/odamex/.odamex/
+  done
+fi
+
+# Build the complete command
+if [ -n "$pwadparams" ]; then
+  cmd="/app/server/odasrv -iwad /home/odamex/.odamex/${oiwad} -file${pwadparams} -port ${odaport}${maplist}"
+else
+  cmd="/app/server/odasrv -iwad /home/odamex/.odamex/${oiwad} -port ${odaport}${maplist}"
+fi
 echo "Command: $cmd"
 
-# /app/server/odasrv +set sv_waddownload 1 -iwad "/app/iwads/${oiwad}"${pwadparams} -port ${odaport}${maplist} > /home/odamex/.odamex/odasrv.log &
-/app/server/odasrv -iwad "/app/iwads/${oiwad}" -file ${pwadparams} -port ${odaport} +MAP ${mapstring} -logfile /var/log/odamex/odasrv_${odaport}.log &
+# Execute the command
+eval $cmd -logfile /var/log/odamex/odasrv_${odaport}.log &
 
 sleep 72000
 exit 0
