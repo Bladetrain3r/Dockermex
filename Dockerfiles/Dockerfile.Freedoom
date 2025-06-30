@@ -44,4 +44,6 @@ USER odamex
 USER ubuntu
 # ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/usr/bin/bash", "/app/runserver.sh"]
-EXPOSE 10666/udp
+# Use the port specified in the .env file
+ENV ODAPORT=${ODAPORT}
+EXPOSE ${ODAPORT}/udp

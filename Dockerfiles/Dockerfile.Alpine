@@ -21,7 +21,8 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make odawad
 # Runtime Stage
 
 FROM alpine:latest AS server
-ENV ODAPORT=10666
+# Use the port specified in the .env file
+ENV ODAPORT=${ODAPORT}
 WORKDIR /app 
 RUN adduser -D -h /app odamex && chown -R odamex:odamex /app
 RUN apk update && apk add --no-cache dos2unix bash

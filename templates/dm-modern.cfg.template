@@ -1,0 +1,154 @@
+# Odamex Configuration Template
+# Generated from input config file
+# Replace {{VARIABLE_NAME}} with actual values
+
+// "Modern" Doom 2 Style (16 Player) Deathmatch Ruleset (No Jump/No Freelook)
+// Odamex 10.6.0
+// For in-depth information on these variables, visit http://odamex.net/wiki/Category:Server_variables
+// Note that 1 = on, 0 = off
+
+// --- Network/Broadcast/Administrative Settings ---
+
+set sv_waddownload v{{SV_WADDOWNLOAD}}
+set sv_usemasters v{{SV_USEMASTERS}}
+set log_fulltimestamps v{{LOG_FULLTIMESTAMPS}}
+set join_password v{{JOIN_PASSWORD}}
+set rcon_password v{{RCON_PASSWORD}}
+set sv_banfile v{{SV_BANFILE}}
+set sv_banfile_reload v{{SV_BANFILE_RELOAD}}
+set sv_downloadsites v{{SV_DOWNLOADSITES}}
+set sv_email v{{SV_EMAIL}}
+set sv_hostname v{{SV_HOSTNAME}}
+set sv_maxrate v{{SV_MAXRATE}}
+set sv_motd v{{SV_MOTD}}
+set sv_natport v{{SV_NATPORT}}
+set sv_networkcompression v{{SV_NETWORKCOMPRESSION}}
+set sv_ticbuffer v{{SV_TICBUFFER}}
+set sv_upnp v{{SV_UPNP}}
+set sv_upnp_description v{{SV_UPNP_DESCRIPTION}}
+set sv_upnp_discovertimeout v{{SV_UPNP_DISCOVERTIMEOUT}}
+set sv_website v{{SV_WEBSITE}}
+set waddirs v{{WADDIRS}}
+
+// --- General Game Conditions ---
+
+set sv_allowcheats v{{SV_ALLOWCHEATS}}
+set sv_allowexit v{{SV_ALLOWEXIT}}
+set sv_emptyfreeze v{{SV_EMPTYFREEZE}}
+set sv_emptyreset v{{SV_EMPTYRESET}}
+set sv_fraglimit v{{SV_FRAGLIMIT}}
+set sv_gametype v{{SV_GAMETYPE}}
+set sv_intermissionlimit v{{SV_INTERMISSIONLIMIT}}
+set sv_maxclients v{{SV_MAXCLIENTS}}
+set sv_maxplayers v{{SV_MAXPLAYERS}}
+set sv_scorelimit v{{SV_SCORELIMIT}}
+set sv_shufflemaplist v{{SV_SHUFFLEMAPLIST}}
+set sv_skill v{{SV_SKILL}}
+set sv_timelimit v{{SV_TIMELIMIT}}
+
+// --- General Gameplay ---
+
+set sv_allowjump v{{SV_ALLOWJUMP}}
+set sv_doubleammo v{{SV_DOUBLEAMMO}}
+set sv_forcerespawn v{{SV_FORCERESPAWN}}
+set sv_forcerespawntime v{{SV_FORCERESPAWNTIME}}
+set sv_fragexitswitch v{{SV_FRAGEXITSWITCH}}
+set sv_freelook v{{SV_FREELOOK}}
+set sv_infiniteammo v{{SV_INFINITEAMMO}}
+set sv_itemsrespawn v{{SV_ITEMSRESPAWN}}
+set sv_respawnsuper v{{SV_RESPAWNSUPER}}
+set sv_itemrespawntime v{{SV_ITEMRESPAWNTIME}}
+set sv_maxcorpses v{{SV_MAXCORPSES}}
+set sv_unblockplayers v{{SV_UNBLOCKPLAYERS}}
+set sv_weaponstay v{{SV_WEAPONSTAY}}
+
+// --- Single Player/Coop ---
+
+set sv_fastmonsters v{{SV_FASTMONSTERS}}
+set sv_loopepisode v{{SV_LOOPEPISODE}}
+set sv_monstersrespawn v{{SV_MONSTERSRESPAWN}}
+set sv_nomonsters v{{SV_NOMONSTERS}}
+set sv_sharekeys v{{SV_SHAREKEYS}}
+
+// --- Team Game Specific Variables ---
+
+set ctf_flagathometoscore v{{CTF_FLAGATHOMETOSCORE}}
+set ctf_flagtimeout v{{CTF_FLAGTIMEOUT}}
+set ctf_manualreturn v{{CTF_MANUALRETURN}}
+set sv_friendlyfire v{{SV_FRIENDLYFIRE}}
+set sv_maxplayersperteam v{{SV_MAXPLAYERSPERTEAM}}
+set sv_teamsinplay v{{SV_TEAMSINPLAY}}
+set sv_teamspawns v{{SV_TEAMSPAWNS}}
+
+// --- Gametype Modification ---
+
+set g_ctf_notouchreturn v{{G_CTF_NOTOUCHRETURN}}
+set g_gametypename v{{G_GAMETYPENAME}}
+set g_lives v{{G_LIVES}}
+set g_lives_jointimer v{{G_LIVES_JOINTIMER}}
+set g_postroundtime v{{G_POSTROUNDTIME}}
+set g_preroundtime v{{G_PREROUNDTIME}}
+set g_roundlimit v{{G_ROUNDLIMIT}}
+set g_rounds v{{G_ROUNDS}}
+set g_sides v{{G_SIDES}}
+set g_winlimit v{{G_WINLIMIT}}
+set g_winnerstays v{{G_WINNERSTAYS}}
+
+// --- Compatibility Related Options---
+
+set co_allowdropoff v{{CO_ALLOWDROPOFF}}
+set co_blockmapfix v{{CO_BLOCKMAPFIX}}
+set co_boomphys v{{CO_BOOMPHYS}}
+set co_fineautoaim v{{CO_FINEAUTOAIM}}
+set co_fixweaponimpacts v{{CO_FIXWEAPONIMPACTS}}
+set co_nosilentspawns v{{CO_NOSILENTSPAWNS}}
+set co_realactorheight v{{CO_REALACTORHEIGHT}}
+set co_zdoomphys v{{CO_ZDOOMPHYS}}
+set sv_aircontrol v{{SV_AIRCONTROL}}
+set sv_forcewater v{{SV_FORCEWATER}}
+set sv_gravity v{{SV_GRAVITY}}
+set sv_spawndelaytime v{{SV_SPAWNDELAYTIME}}
+set sv_splashfactor v{{SV_SPLASHFACTOR}}
+
+// --- Forcing Client Options ---
+
+set sv_allowmovebob v{{SV_ALLOWMOVEBOB}}
+set sv_allowpwo v{{SV_ALLOWPWO}}
+set sv_allowredscreen v{{SV_ALLOWREDSCREEN}}
+set sv_allowshowspawns v{{SV_ALLOWSHOWSPAWNS}}
+set sv_allowtargetnames v{{SV_ALLOWTARGETNAMES}}
+set sv_flooddelay v{{SV_FLOODDELAY}}
+set sv_globalspectatorchat v{{SV_GLOBALSPECTATORCHAT}}
+set sv_maxunlagtime v{{SV_MAXUNLAGTIME}}
+
+// --- Vote Settings ---
+
+set sv_callvote_coinflip v{{SV_CALLVOTE_COINFLIP}}
+set sv_callvote_forcespec v{{SV_CALLVOTE_FORCESPEC}}
+set sv_callvote_fraglimit v{{SV_CALLVOTE_FRAGLIMIT}}
+set sv_callvote_kick v{{SV_CALLVOTE_KICK}}
+set sv_callvote_map v{{SV_CALLVOTE_MAP}}
+set sv_callvote_nextmap v{{SV_CALLVOTE_NEXTMAP}}
+set sv_callvote_randcaps v{{SV_CALLVOTE_RANDCAPS}}
+set sv_callvote_randmap v{{SV_CALLVOTE_RANDMAP}}
+set sv_callvote_randpickup v{{SV_CALLVOTE_RANDPICKUP}}
+set sv_callvote_restart v{{SV_CALLVOTE_RESTART}}
+set sv_callvote_scorelimit v{{SV_CALLVOTE_SCORELIMIT}}
+set sv_callvote_timelimit v{{SV_CALLVOTE_TIMELIMIT}}
+set sv_vote_timeout v{{SV_VOTE_TIMEOUT}}
+set sv_vote_timelimit v{{SV_VOTE_TIMELIMIT}}
+set sv_vote_majority v{{SV_VOTE_MAJORITY}}
+
+// --- Other Misc. Variables ---
+
+set sv_endmapscript v{{SV_ENDMAPSCRIPT}}
+set sv_startmapscript v{{SV_STARTMAPSCRIPT}}
+
+// --- Aliases ---
+
+alias "?" "{{ALIAS__}}"
+alias "changemap" "{{ALIAS_CHANGEMAP}}"
+alias "idclev" "{{ALIAS_IDCLEV}}"
+
+# End of template
+# Use a template processor to replace {{VARIABLE_NAME}} placeholders
