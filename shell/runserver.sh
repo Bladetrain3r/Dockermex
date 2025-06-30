@@ -36,11 +36,12 @@ if grep -v "coop" /app/config/${oconfigfile}; then
   echo $maplist
 fi
 
-pwads=$(ls /app/pwads | grep -i -e .wad -e .pk3 | grep -i -v .txt)
+pwads=$(ls /app/pwads 2>/dev/null | grep -i -e .wad -e .pk3 | grep -i -v .txt)
 pwadparams=""
 for file in $pwads; do
   pwadparams="$pwadparams $file"
 done
+echo "PWADs found: $pwads"
 
 # Copy PWADs to odamex directory for easier access
 if [ -n "$pwadparams" ]; then
@@ -52,7 +53,7 @@ fi
 
 # Build the complete command
 if [ -n "$pwadparams" ]; then
-  cmd="/app/server/odasrv -iwad /home/odamex/.odamex/${oiwad} -file${pwadparams} -port ${odaport}${maplist}"
+  cmd="/app/server/odasrv -iwad /home/odamex/.odamex/${oiwad} -file ${pwadparams} -port ${odaport}${maplist}"
 else
   cmd="/app/server/odasrv -iwad /home/odamex/.odamex/${oiwad} -port ${odaport}${maplist}"
 fi
