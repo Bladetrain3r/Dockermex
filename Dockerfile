@@ -46,8 +46,9 @@ WORKDIR /app
 RUN useradd -m odamex && chown -R odamex:odamex /app
 RUN apt update && apt install -y dos2unix
 COPY --chown=odamex configs /app/config
-COPY --chown=odamex iwads /app/iwads
-COPY --chown=odamex pwads /app/pwads
+RUN mkdir -p /app/iwads /app/pwads
+# COPY --chown=odamex iwads /app/iwads
+# COPY --chown=odamex pwads /app/pwads
 COPY --chown=odamex shell/runserver.sh /app
 COPY --from=srv --chown=odamex /app/odamex/build/server/odasrv /app/server/odasrv
 COPY --from=WAD --chown=odamex /app/odamex/build/wad/odamex.wad /app/iwads
