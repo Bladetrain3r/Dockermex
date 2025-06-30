@@ -46,7 +46,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --help             Show this help message"
             echo ""
             echo "This script prepares a fresh Dockermex clone for immediate use by:"
-            echo "- Initializing git submodules"
+            echo "- Initializing git submodules (API and Frontend only)"
             echo "- Creating .env file with secure random credentials"
             echo "- Creating required directories"
             echo "- Generating self-signed SSL certificates"
@@ -123,11 +123,11 @@ fi
 
 log_info "All required tools are available"
 
-# 1. Initialize submodules
-log_step "Initializing Git submodules..."
+# 1. Initialize submodules (API and Frontend only)
+log_step "Initializing Git submodules (API and Frontend)..."
 if command -v git &> /dev/null; then
     git submodule update --init --recursive
-    log_info "Submodules initialized"
+    log_info "API and Frontend submodules initialized"
 else
     log_warning "Git not found. You may need to manually initialize submodules."
 fi

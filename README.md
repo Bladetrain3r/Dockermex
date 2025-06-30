@@ -63,7 +63,7 @@ With that in mind, the aspiration is to:
 
 ## Initial Setup
 
-1) Git clone this project using the --recurse-submodules commands to sync third party code.
+1) Git clone this project using the --recurse-submodules command to sync the API and Frontend code.
 2) Install dependencies (see below)
 3) Create a envfile (.env) from the template and point to the locations of your WADs
 4) To run just the API and Webapp, run *docker compose -f docker-compose-webapp-modsec.yml*
