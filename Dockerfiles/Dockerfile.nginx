@@ -36,8 +36,8 @@ RUN ./build.sh && \
 # https://nginx.org/download/nginx-1.27.3.tar.gz
 
 # Get and compile the Nginx connector
-# Use the nginx version specified in the .env file
-ENV NGINX_VERSION ${NGINX_VERSION}
+# Use the nginx version specified in the .env file, or default to 1.27.5 if not provided
+ENV NGINX_VERSION ${NGINX_VERSION:-1.27.5}
 WORKDIR /
 RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
 RUN nginx -v 2>&1 | awk -F/ '{print $2}' > /tmp/nginx_version
