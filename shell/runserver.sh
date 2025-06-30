@@ -18,7 +18,7 @@ test -e /app/config/$oconfigfile || echo "Config file not found"
 
 echo "Using IWAD: $oiwad"
 mkdir /home/odamex/.odamex
-cp /app/iwads/odamex.wad /home/odamex/.odamex && \
+cp /app/iwads/freeware/odamex.wad /home/odamex/.odamex && \
 cp /app/iwads/${oiwad} /home/odamex/.odamex && \
 cp /app/config/${oconfigfile} /home/odamex/.odamex/odasrv.cfg
 
@@ -36,12 +36,32 @@ if grep -v "coop" /app/config/${oconfigfile}; then
   echo $maplist
 fi
 
-pwads=$(ls /app/pwads 2>/dev/null | grep -i -e .wad -e .pk3 | grep -i -v .txt)
+# Get list of IWADs to exclude from pwads
+iwads=$(ls /app/iwads 2>/dev/null | grep -i -e .wad -e .pk3 | grep -i -v .txt)
+echo "IWADs found: $iwads"
+
+# Get pwads and filter out any that match IWAD names
+all_pwads=$(ls /app/pwads 2>/dev/null | grep -i -e .wad -e .pk3 | grep -i -v .txt)
+pwads=""
+for file in $all_pwads; do
+  is_iwad=false
+  for iwad in $iwads; do
+    if [ "$file" = "$iwad" ]; then
+      is_iwad=true
+      echo "Skipping $file (found in iwads folder)"
+      break
+    fi
+  done
+  if [ "$is_iwad" = false ]; then
+    pwads="$pwads $file"
+  fi
+done
+
 pwadparams=""
 for file in $pwads; do
   pwadparams="$pwadparams $file"
 done
-echo "PWADs found: $pwads"
+echo "PWADs to load: $pwads"
 
 # Copy PWADs to odamex directory for easier access
 if [ -n "$pwadparams" ]; then
