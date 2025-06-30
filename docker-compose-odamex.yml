@@ -3,18 +3,18 @@ services:
     build:
       context: .
     image: odamex:latest
-    container_name: odamex_duel_freedoom1
+    container_name: odamex_duel_doom2
     env_file:
       - .env
     environment:
-      - IWAD=freedoom1.wad
+      - IWAD=commercial/DOOM2.WAD
       - CONFIGFILE=dm-modern.cfg
       - ODAPORT=10666
     ports:
       - 10666:10666/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
-      - ${PWAD_FOLDER}/duel:/app/pwads:ro
+      - ${IWAD_FOLDER}:/app/iwads:ro
+      - ${PWAD_FOLDER}/stub:/app/pwads:ro
       - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
       resources:
@@ -33,13 +33,13 @@ services:
     env_file:
       - .env
     environment:
-      - IWAD=freedm.wad
+      - IWAD=freeware/freedm.wad
       - CONFIGFILE=dm-modern.cfg
       - ODAPORT=10569
     ports:
       - 10569:10569/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${IWAD_FOLDER}:/app/iwads:ro
       - ${PWAD_FOLDER}/dm:/app/pwads:ro
       - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
@@ -59,13 +59,13 @@ services:
     env_file:
       - .env
     environment:
-      - IWAD=freedoom2.wad
+      - IWAD=freeware/freedoom2.wad
       - CONFIGFILE=coop-full-throttle.cfg
       - ODAPORT=10571
     ports:
       - 10571:10571/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${IWAD_FOLDER}:/app/iwads:ro
       - ${PWAD_FOLDER}/coop:/app/pwads:ro
       - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
@@ -85,13 +85,13 @@ services:
     env_file:
       - .env
     environment:
-      - IWAD=freedoom2.wad
+      - IWAD=freeware/freedoom2.wad
       - CONFIGFILE=coop-modern.cfg
       - ODAPORT=10572
     ports:
       - 10572:10572/udp
     volumes:
-      - ${IWAD_FOLDER}/freeware:/app/iwads:ro
+      - ${IWAD_FOLDER}:/app/iwads:ro
       - ${PWAD_FOLDER}/scythe:/app/pwads:ro
       - ${ODAMEX_CONFIGS_PATH}:/app/config:ro
     deploy:
