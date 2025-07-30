@@ -38,17 +38,33 @@ Speed is life, bloat is death. It must let you manage servers fast, and with min
 
 ## V2 Roadmap (Rough)
 
-### Phase 1: Demolition
+### Phase 1: Demolition (DONE)
 
 Remove API and Frontend submodules
 Archive V1 for posterity
 Archive API and Frontend repositories.
 
-### Phase 2: Foundation
+### Phase 2: Foundation (PENDING)
 
 Refactor Odamex container services for script-based orchestration
 Implement WAD sanitization on import (spaces→underscores, strip specials)
 Create JSON-based server config templates
+
+**Folder Structure Proposal**
+```
+dockermex-v2/
+├── iwads/         # DOOM.WAD, DOOM2.WAD, etc.
+├── pwads/         # Custom WADs (sanitized names)
+├── sourceports/   # Odamex binaries, configs
+├── configs/       # Server JSON configs
+├── utils/         # Scripts, SSH keys, WAD sanitizer, etc.
+├───── Scripts     # Anything sh
+├───── Keys        # Anything SSH
+├───── Tools       # Doom related tools.
+├── docker-compose.yml
+├── Dockerfile.gameserver
+└── Dockerfile.launcher
+```
 
 ### Phase 3: Integration
 
@@ -63,6 +79,7 @@ Switch to polish and crud removal, make it something you can SSH -XC into an EC2
 
 ### Phase 5: V2.0 and Beyond
 No specific expansion are planned beyond this point, bugfixing and keeping up to date with new third party releases are about the most of it.
+
 Hold that thought: Expand to other id games that have a Linux source port that can do hosting. Quake, at least. 
 Hexen/Heretic/Strife shouldn't even need to be explicitly accounted for they're just iwads you need the right source port to run.
 
@@ -71,6 +88,7 @@ No specific expansions are... wait. Okay, but seriously this time - past this po
 
 ### These probably won't happen but I like the ideas
 DOS servers with DOSBox... thank god they're TCP/IP but still. Dosbox itself no problem, the confs not really a problem, DOSBox networking layering with Docker? Probably a nightmare.
+Implement a Doombuilder/SLADE container. Mind the node builders. DOOM modding studio you can use remotely.
 
 ## Notes
 
