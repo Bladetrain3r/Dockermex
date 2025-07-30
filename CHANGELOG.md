@@ -40,9 +40,9 @@ Speed is life, bloat is death. It must let you manage servers fast, and with min
 
 ### Phase 1: Demolition
 
-Remove web application layer. No Nginx, no Flask, no HTML
-Strip out authentication, sessions, database
+Remove API and Frontend submodules
 Archive V1 for posterity
+Archive API and Frontend repositories.
 
 ### Phase 2: Foundation
 
